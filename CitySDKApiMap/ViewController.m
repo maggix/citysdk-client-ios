@@ -22,6 +22,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *layersLabel;
 
 @property (nonatomic, strong) CSDKResults *results;
+@property (nonatomic, strong) NSMutableArray *allCoordinates;
 
 @end
 
@@ -47,6 +48,11 @@
     [_admrTextField endEditing:YES];
     [_nodesTextField endEditing:YES];
     
+    [_mapView removeOverlays:_mapView.overlays];
+    _allCoordinates = [[NSMutableArray alloc] init];
+    
+    //TODO: center map on the correct admr region (e.g. Roma..)
+    
     //build the path for the request
     NSString *path = @"";
     
@@ -61,7 +67,7 @@
     
     if(_nodesTextField.text.length < 1)
     {
-        path = [path stringByAppendingString:_admrTextField.text];
+//        path = [path stringByAppendingString:_admrTextField.text];
         path = [path stringByAppendingString:@"?"];
     }
     else{
@@ -114,10 +120,11 @@
                                 CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * coordCount);
 
                                 for(NSArray *coord in polylineCoord){
-                                    float lon = [[[coord objectAtIndex:0] stringValue] floatValue];
-                                    float lat = [[[coord objectAtIndex:1] stringValue] floatValue];
+                                    double lon = [[[coord objectAtIndex:0] stringValue] floatValue];
+                                    double lat = [[[coord objectAtIndex:1] stringValue] floatValue];
                                     
                                     coordinateArray[caIndex] = CLLocationCoordinate2DMake(lat, lon);
+                                    [_allCoordinates addObject:[[CLLocation alloc] initWithLatitude:lat longitude:lon]];
                                     caIndex++;
                                 }
                                 
@@ -131,15 +138,14 @@
                    }
                     if ([r.geom.type isEqualToString:@"Point"]) {
                         //point
-                        CLLocation *p = [[CLLocation alloc]
-                                     initWithLatitude:
-                                         [[[r.geom.coordinates objectAtIndex:1] stringValue] floatValue]
-                                             longitude:
-                                         [[[r.geom.coordinates objectAtIndex:0] stringValue] floatValue]];
+                        double lat = [[[r.geom.coordinates objectAtIndex:1] stringValue] doubleValue];
+                        double lon = [[[r.geom.coordinates objectAtIndex:1] stringValue] doubleValue];
+                        CLLocation *p = [[CLLocation alloc] initWithLatitude:lat longitude: lon];
                         CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * 1);
-                        coordinateArray[0] = CLLocationCoordinate2DMake(p.coordinate.latitude, p.coordinate.longitude);
+                        coordinateArray[0] = CLLocationCoordinate2DMake(lat, lon);
                         MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:1];
                         [result addObject:pl];
+                        [_allCoordinates addObject:[[CLLocation alloc] initWithLatitude:lon longitude:lon]];
                         free(coordinateArray);
                    }
                     
@@ -152,10 +158,11 @@
                                 
                                 for(NSArray *coord in coordGrp){
                                     
-                                    float lon = [[[coord objectAtIndex:0] stringValue] floatValue];
-                                    float lat = [[[coord objectAtIndex:1] stringValue] floatValue];
+                                    double lon = [[[coord objectAtIndex:0] stringValue] floatValue];
+                                    double lat = [[[coord objectAtIndex:1] stringValue] floatValue];
                                     
                                     coordinateArray[caIndex] = CLLocationCoordinate2DMake(lat, lon);
+                                    [_allCoordinates addObject:[[CLLocation alloc] initWithLatitude:lat longitude:lon]];
                                     caIndex++;
                                 }
                                 
@@ -172,10 +179,10 @@
                 //Update map
                 
                 [_mapView addOverlays:result];
-                CLLocation *ams = [[CLLocation alloc] initWithLatitude:52.373056f longitude:4.892222f]; // CLLocationCoordinate2DMake(52.373056f, 4.892222f);
-                MKCoordinateRegion region = MKCoordinateRegionMake(ams.coordinate, MKCoordinateSpanMake(1.0f, 1.0f));
-                [_mapView setRegion:region animated:YES];
-                                
+                
+                //set region to display
+                
+                [_mapView setRegion:[self getCenterRegionFromPoints:_allCoordinates] animated:YES];
             }
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -189,6 +196,30 @@
             [MBProgressHUD hideHUDForView:self.view animated:YES];
         });
     });
+}
+
+
+- (MKCoordinateRegion)getCenterRegionFromPoints:(NSArray *)points
+{
+    CLLocationCoordinate2D topLeftCoordinate;
+    topLeftCoordinate.latitude = -90;
+    topLeftCoordinate.longitude = 180;
+    CLLocationCoordinate2D bottomRightCoordinate;
+    bottomRightCoordinate.latitude = 90;
+    bottomRightCoordinate.longitude = -180;
+    for (CLLocation *location in points) {
+        topLeftCoordinate.longitude = fmin(topLeftCoordinate.longitude, location.coordinate.longitude);
+        topLeftCoordinate.latitude = fmax(topLeftCoordinate.latitude, location.coordinate.latitude);
+        bottomRightCoordinate.longitude = fmax(bottomRightCoordinate.longitude, location.coordinate.longitude);
+        bottomRightCoordinate.latitude = fmin(bottomRightCoordinate.latitude, location.coordinate.latitude);
+    }
+    MKCoordinateRegion region;
+    region.center.latitude = topLeftCoordinate.latitude - (topLeftCoordinate.latitude - bottomRightCoordinate.latitude) * 0.5;
+    region.center.longitude = topLeftCoordinate.longitude + (bottomRightCoordinate.longitude - topLeftCoordinate.longitude) * 0.5;
+    region.span.latitudeDelta = fabs(topLeftCoordinate.latitude - bottomRightCoordinate.latitude) * 1.2; //2
+    region.span.longitudeDelta = fabs(bottomRightCoordinate.longitude - topLeftCoordinate.longitude) * 1.2; //2
+    //    NSLog(@"zoom lvl : %f, %f", region.span.latitudeDelta, region.span.latitudeDelta);
+    return region;
 }
 
 
@@ -213,6 +244,5 @@
     }
     return nil;
 }
-
 
 @end
