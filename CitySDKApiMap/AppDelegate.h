@@ -8,12 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@class ViewController;
+//@class ViewController;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, UITextFieldDelegate>
+@class MenuViewController;
+
+@interface AppDelegate : UIResponder <UIApplicationDelegate, UINavigationControllerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
-@property (strong, nonatomic) ViewController *viewController;
+//@property (strong, nonatomic) ViewController *viewController;
+
+@property (strong, nonatomic) MenuViewController *viewController;
 
 @end

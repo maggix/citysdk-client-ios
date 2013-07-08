@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 #import <MBProgressHUD/MBProgressHUD.h>
-#import "AFNetworking.h"
 
 @interface ViewController : UIViewController <MKMapViewDelegate>
 

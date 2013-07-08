@@ -1,39 +1,42 @@
 //
-//  ViewController.m
+//  MapViewController.m
 //  CitySDKApiMap
 //
-//  Created by Giovanni on 6/29/13.
+//  Created by Giovanni on 7/7/13.
 //  Copyright (c) 2013 Giovanni Maggini. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "MapViewController.h"
+#import "CSDKRequest.h"
 #import "DataModels.h"
-#import "AFNetworking.h"
+#import "CSDKHTTPClient.h"
 
-#define kCitySDKApiBaseUrl @"http://api.citysdk.waag.org/"
+@interface MapViewController ()
 
-@interface ViewController ()
-
-@property (nonatomic, weak) IBOutlet UITextField *admrTextField;
-@property (nonatomic, weak) IBOutlet UITextField *nodesTextField;
-@property (nonatomic, weak) IBOutlet UIButton *goButton;
 @property (nonatomic, weak) IBOutlet MKMapView *mapView;
-@property (nonatomic, weak) IBOutlet UILabel *resultsLabel;
-@property (nonatomic, weak) IBOutlet UILabel *layersLabel;
-
 @property (nonatomic, strong) CSDKResults *results;
 @property (nonatomic, strong) NSMutableArray *allCoordinates;
 
 @end
 
-@implementation ViewController
+@implementation MapViewController
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-    
+    // Do any additional setup after loading the view from its nib.
     [_mapView setDelegate:self];
+    [self loadResults];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -42,63 +45,44 @@
     // Dispose of any resources that can be recreated.
 }
 
-
-- (IBAction)goButtonPressed:(id)sender
+- (void)loadResults
 {
-    [_admrTextField endEditing:YES];
-    [_nodesTextField endEditing:YES];
     
     [_mapView removeOverlays:_mapView.overlays];
     _allCoordinates = [[NSMutableArray alloc] init];
-        
+    
     //build the path for the request
-    NSString *path = @"";
-    
-    if( _admrTextField.text.length < 1)
-    {
-
-    }
-    else{
-        path = [path stringByAppendingString:_admrTextField.text];
-        path = [path stringByAppendingString:@"/"];
-    }
-    
-    if(_nodesTextField.text.length < 1)
-    {
-//        path = [path stringByAppendingString:_admrTextField.text];
-        path = [path stringByAppendingString:@"?"];
-    }
-    else{
-    path = [path stringByAppendingString:_nodesTextField.text];
-    }
-    path = [path stringByAppendingString:@"&geom"];
-    
-    
-    NSMutableDictionary *paramsDict = [[NSMutableDictionary alloc] init]; //I put everything in the path
-    [paramsDict setValue:@"bag.panden" forKey:@"layer"];
+    NSString *path = @"/";
+    path = [path stringByAppendingString:[_request baseUrlForRequest]];
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        
+
+
         NSURL *url = [NSURL URLWithString:kCitySDKApiBaseUrl];
+        
+        CSDKHTTPClient *client = [CSDKHTTPClient sharedClient];
+//        [client getResults];
+        //Results should be a 
+        
         AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
-        [httpClient getPath:path parameters:paramsDict success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            
+        [httpClient getPath:path parameters:[_request requestParamsForRequest] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"operation: %@", [operation description]);
+            NSLog(@"operation: %@", [[operation request] URL]);
             __autoreleasing NSError* dataError = nil;
             NSDictionary *r = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:&dataError];
-
+            
             //get JSON stuff
             CSDKresponse *resp = [CSDKresponse modelObjectWithDictionary:r];
             if ([resp.status isEqualToString:@"success"]) {
                 NSLog(@"Success!");
-//                NSLog(@"Resp: %@", resp);
+                //                NSLog(@"Resp: %@", resp);
                 __block NSString *stringLayers = @"Layers: ";
                 [resp.results enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     stringLayers = [stringLayers stringByAppendingString:[((CSDKResults*)obj) layer]];
                     stringLayers = [stringLayers stringByAppendingString:@" "];
                 }];
-
-                _resultsLabel.text = [NSString stringWithFormat:@"Results: %@",resp.recordCount];
+                
                 
                 __block NSMutableArray *result = [[NSMutableArray alloc] init];
                 
@@ -107,9 +91,9 @@
                     CSDKResults *r = ((CSDKResults*)obj);
                     
                     //If it's a Multipolygon type we need a polyline
-                   if( [r.geom.type isEqualToString:@"MultiPolygon"])
-                   {
-                       //each one is a set of coordinates. For example the admr.nl.amsterdam is made of 3 different groups
+                    if( [r.geom.type isEqualToString:@"MultiPolygon"])
+                    {
+                        //each one is a set of coordinates. For example the admr.nl.amsterdam is made of 3 different groups
                         for(NSArray *coordGrp in r.geom.coordinates){
                             //for each group I need to loop again (this is unclear why?)
                             for (NSArray *polylineCoord in coordGrp) {
@@ -117,7 +101,7 @@
                                 int caIndex = 0;
                                 NSInteger coordCount = [polylineCoord count];
                                 CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * coordCount);
-
+                                
                                 for(NSArray *coord in polylineCoord){
                                     double lon = [[[coord objectAtIndex:0] stringValue] floatValue];
                                     double lat = [[[coord objectAtIndex:1] stringValue] floatValue];
@@ -130,70 +114,70 @@
                                 MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:coordCount];
                                 [result addObject:pl];
                                 free(coordinateArray);
-
+                                
                             }
                         }
-  
-                   }
+                        
+                    }
                     if ([r.geom.type isEqualToString:@"Point"]) {
                         //point
                         double lat = [[[r.geom.coordinates objectAtIndex:1] stringValue] doubleValue];
                         double lon = [[[r.geom.coordinates objectAtIndex:1] stringValue] doubleValue];
-//                        CLLocation *p = [[CLLocation alloc] initWithLatitude:lat longitude: lon];
+                        CLLocation *p = [[CLLocation alloc] initWithLatitude:lat longitude: lon];
                         CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * 1);
                         coordinateArray[0] = CLLocationCoordinate2DMake(lat, lon);
                         MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:1];
                         [result addObject:pl];
                         [_allCoordinates addObject:[[CLLocation alloc] initWithLatitude:lon longitude:lon]];
                         free(coordinateArray);
-                   }
+                    }
                     
                     if ([r.geom.type isEqualToString:@"Polygon"]) {
-                        //each one is a set of coordinates. 
+                        //each one is a set of coordinates.
                         for(NSArray *coordGrp in r.geom.coordinates){
-                                int caIndex = 0;
-                                NSInteger coordCount = [coordGrp count];
-                                CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * coordCount);
+                            int caIndex = 0;
+                            NSInteger coordCount = [coordGrp count];
+                            CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * coordCount);
+                            
+                            for(NSArray *coord in coordGrp){
                                 
-                                for(NSArray *coord in coordGrp){
-                                    
-                                    double lon = [[[coord objectAtIndex:0] stringValue] floatValue];
-                                    double lat = [[[coord objectAtIndex:1] stringValue] floatValue];
-                                    
-                                    coordinateArray[caIndex] = CLLocationCoordinate2DMake(lat, lon);
-                                    [_allCoordinates addObject:[[CLLocation alloc] initWithLatitude:lat longitude:lon]];
-                                    caIndex++;
-                                }
+                                double lon = [[[coord objectAtIndex:0] stringValue] floatValue];
+                                double lat = [[[coord objectAtIndex:1] stringValue] floatValue];
                                 
-                                MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:coordCount];
-                                [result addObject:pl];
-                                free(coordinateArray);
+                                coordinateArray[caIndex] = CLLocationCoordinate2DMake(lat, lon);
+                                [_allCoordinates addObject:[[CLLocation alloc] initWithLatitude:lat longitude:lon]];
+                                caIndex++;
+                            }
+                            
+                            MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:coordCount];
+                            [result addObject:pl];
+                            free(coordinateArray);
                         }
                     }
                 }];
-
+                
                 //Update map
                 
+
                 [_mapView addOverlays:result];
                 
                 //set region to display
                 
                 [_mapView setRegion:[self getCenterRegionFromPoints:_allCoordinates] animated:YES];
+
             }
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"error: %@",[error description] );
-            _resultsLabel.text = @"Error";
-
+            UIAlertView *a = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error while loading", nil) message:[NSString stringWithFormat:@"%@", [error description]] delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles: nil];
+            [a show];
         }];
-        
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.view animated:YES];
         });
     });
 }
-
 
 - (MKCoordinateRegion)getCenterRegionFromPoints:(NSArray *)points
 {
@@ -218,14 +202,7 @@
     return region;
 }
 
-
-#pragma mark -- UITextField Delegate
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-}
-
-#pragma mark - 
+#pragma mark -
 #pragma mark MKOverlayView Delegate
 
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay
