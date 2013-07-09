@@ -7,14 +7,15 @@
 //
 
 #import "MenuViewController.h"
-#import "CSDKRequest.h"
+#import "CSDKNodesRequest.h"
 #import "MapViewController.h"
 #import "ViewController.h"
 
 @interface MenuViewController ()
 
+@property (nonatomic, strong) CLLocation *location;
 @property (nonatomic, strong) NSMutableArray *objects;
-@property (nonatomic, strong) NSMutableArray *userObjects; //for the queries custom-made by user
+@property (nonatomic, strong) NSMutableArray *locationObjects; //objects around me
 
 @end
 
@@ -33,6 +34,9 @@
 {
     [super viewDidLoad];
     [self initObjects];
+    [self initLocationObjects];
+    
+    [self startLocationServices];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -48,7 +52,7 @@
     {
         _objects = [[NSMutableArray alloc] init];
         //museums in Amsterdam
-        CSDKRequest *r1 = [[CSDKRequest alloc] init];
+        CSDKNodesRequest *r1 = [[CSDKNodesRequest alloc] init];
         r1.admr = @"admr.nl.amsterdam";
         r1.layerKey = @"osm::tourism";
         r1.layerValue = @"museum";
@@ -57,7 +61,7 @@
         
         //open service requests in Helsinki
         //nodes?311.helsinki::status=open
-        CSDKRequest *r2 = [[CSDKRequest alloc] init];
+        CSDKNodesRequest *r2 = [[CSDKNodesRequest alloc] init];
         r2.layerKey = @"311.helsinki::status";
         r2.layerValue = @"open";
         r2.per_page = 100;
@@ -65,13 +69,47 @@
         
         //Highways in a 10km radius around Utrecht
         //nodes?lat=52.090774&lon=5.121281&radius=10000&per_page=1000&osm::highway=motorway
+        //Not working!! Because node_type = LineString
+//        [_objects addObject:
+//         [NSDictionary dictionaryWithObjectsAndKeys:@"Highways in a 10km radius around Utrecht", @"title",
+//          [CSDKNodesRequest requestWithAdmr:nil layerKey:@"osm::highway" layerValue:@"motorway" latitude:52.09077 longitude:5.121281 perPage:1000 radius:10000], @"request"
+//          ,nil]];
+        
+        //routes named "Stedenroute"
+        //nodes?name=stedenroute&layer=osm
+        //Not working!!! Because node type = route
+//        [_objects addObject:
+//         [NSDictionary dictionaryWithObjectsAndKeys:@"Routes named \"StedenRoute\"", @"title",
+//          [CSDKNodesRequest requestWithAdmr:nil layerKey:@"layer" layerValue:@"osm" name:@"stedenroute" latitude:0 longitude:0 perPage:0 radius:0], @"request", nil]];
+        
+        //Railway stations in Zoetermeer
+        //admr.nl.zoetermeer/nodes?osm::railway=station&geom&per_page=100
         [_objects addObject:
-         [NSDictionary dictionaryWithObjectsAndKeys:@"Highways in a 10km radius around Utrecht", @"title",
-          [CSDKRequest requestWithAdmr:nil layerKey:@"osm::highway" layerValue:@"motorway" latitude:52.09077 longitude:5.121281 perPage:1000 radius:10000], @"request"
-          ,nil]];
+         [NSDictionary dictionaryWithObjectsAndKeys:@"Railway stations in Zoetermeer", @"title",
+          [CSDKNodesRequest requestWithAdmr:@"admr.nl.zoetermeer" layerKey:@"osm::railway" layerValue:@"station" perPage:1000], @"request", nil]];
+        
     }
     
 }
+
+- (void)initLocationObjects
+{
+    if(_locationObjects == nil){
+        _locationObjects = [[NSMutableArray alloc] init];
+        //museums in Amsterdam
+        CSDKNodesRequest *r1 = [[CSDKNodesRequest alloc] init];
+        r1.admr = nil;
+        r1.layerKey = @"osm::tourism";
+        r1.layerValue = @"museum";
+        r1.per_page = 100;
+        r1.latitude = _location.coordinate.latitude;
+        r1.longitude = _location.coordinate.longitude;
+        r1.radius = 1000;
+        [_locationObjects addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Museums within 1Km from here", @"title", r1, @"request", nil]];
+    }
+}
+
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -84,7 +122,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -95,11 +133,12 @@
             return [_objects count];
             break;
         case 1:
-            return 1;
+            return [_locationObjects count];
         default:
+            return 1;
             break;
     }
-    return nil;
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -115,8 +154,11 @@
             cell.textLabel.text = [[_objects objectAtIndex:indexPath.row] objectForKey:@"title"];
             break;
         case 1:
-            cell.textLabel.text = NSLocalizedString(@"Play with Map", nil);
+            cell.textLabel.text = [[_locationObjects objectAtIndex:indexPath.row] objectForKey:@"title"];
+            break;
         default:
+            cell.textLabel.text = NSLocalizedString(@"Play with Map", nil);
+
             break;
     }
 
@@ -130,8 +172,10 @@
             return NSLocalizedString(@"Choose a request for CitySDK", nil);
             break;
         case 1:
-            return NSLocalizedString(@"Free play", nil);
+            return NSLocalizedString(@"GPS-based requests", nil);
+            break;
         default:
+            return NSLocalizedString(@"Free play", nil);
             break;
     }
 
@@ -187,19 +231,63 @@ return nil;
         {
             MapViewController *detailViewController = [[MapViewController alloc] initWithNibName:@"MapViewController" bundle:nil];
             detailViewController.request = [[_objects objectAtIndex:indexPath.row] objectForKey:@"request"];
-            
             [self.navigationController pushViewController:detailViewController animated:YES];
         }
             break;
         case 1:
         {
+            MapViewController *detailViewController = [[MapViewController alloc] initWithNibName:@"MapViewController" bundle:nil];
+            detailViewController.request = [[_locationObjects objectAtIndex:indexPath.row] objectForKey:@"request"];
+            [self.navigationController pushViewController:detailViewController animated:YES];
+        }
+        default:
+        {
             ViewController *viewController = [[ViewController alloc] initWithNibName:@"ViewController" bundle:nil];
             [self.navigationController pushViewController:viewController animated:YES];
         }
-        default:
             break;
     }
     
 }
+
+# pragma mark - location stuff
+
+- (void)startLocationServices
+{
+    if (![CLLocationManager locationServicesEnabled]) {
+        NSLog(@"location services are disabled");
+        return;
+    }
+    
+    if (nil == locationManager) {
+        locationManager = [[CLLocationManager alloc] init];
+    }
+    
+    locationManager.delegate = self;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    locationManager.distanceFilter = 100;
+    
+    [locationManager startUpdatingLocation];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+    CLLocation *currentLocation = [locations lastObject];
+
+    NSDate* eventDate = currentLocation.timestamp;
+    NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
+    if (abs(howRecent) < 15.0) {
+        
+        _location = currentLocation;
+        [_locationObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            ((CSDKNodesRequest*)[obj objectForKey:@"request"]).latitude = _location.coordinate.latitude;
+            ((CSDKNodesRequest*)[obj objectForKey:@"request"]).longitude = _location.coordinate.longitude;
+        }];
+        [locationManager stopUpdatingLocation];
+    }
+    
+}
+
+
 
 @end

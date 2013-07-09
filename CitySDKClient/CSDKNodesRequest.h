@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-static NSArray *CSDKLayersKeys = nil;
+static NSArray *CSDKLayersKeys;
 
-@interface CSDKRequest : NSObject
+@interface CSDKNodesRequest : NSObject
 
 //Some requests have "layer=..." others have "osm::tourism"
 typedef NS_ENUM(NSUInteger, CSDKLayerKeys) {
@@ -29,13 +29,20 @@ typedef NS_ENUM(NSUInteger, CSDKLayerTypes)
 @property (nonatomic, strong) NSString *admr;
 @property (nonatomic, strong) NSString *layerKey;
 @property (nonatomic, strong) NSString *layerValue;
+@property (nonatomic, strong) NSString *name;
 @property (nonatomic, assign) double latitude;
 @property (nonatomic, assign) double longitude;
 @property (nonatomic, assign) int per_page;
 @property (nonatomic, assign) int radius;
 //@property (nonatomic, strong) NSString *geom;
 
-+ (CSDKRequest*)requestWithAdmr:(NSString*)admr layerKey:(NSString*)layerKey layerValue:(NSString*)layerValue latitude:(double)latitude longitude:(double)longitude perPage:(int)perPage radius:(int)radius;
++ (CSDKNodesRequest*)requestWithAdmr:(NSString*)admr layerKey:(NSString*)layerKey layerValue:(NSString*)layerValue latitude:(double)latitude longitude:(double)longitude perPage:(int)perPage radius:(int)radius;
+
++ (CSDKNodesRequest*)requestWithAdmr:(NSString*)admr layerKey:(NSString*)layerKey layerValue:(NSString*)layerValue perPage:(int)perPage;
+
++ (CSDKNodesRequest*)requestWithAdmr:(NSString*)admr layerKey:(NSString*)layerKey layerValue:(NSString*)layerValue name:(NSString*)name latitude:(double)latitude longitude:(double)longitude perPage:(int)perPage radius:(int)radius;
+
+
 
 - (NSDictionary*)requestParamsForRequest;
 

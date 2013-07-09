@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 
-#import "ViewController.h"
+#import "AFNetworking.h"
 
 #import "MenuViewController.h"
 
@@ -18,7 +18,10 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-//    self.viewController = [[ViewController alloc] initWithNibName:@"ViewController" bundle:nil];
+
+    NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:4 * 1024 * 1024 diskCapacity:20 * 1024 * 1024 diskPath:nil];
+    [NSURLCache setSharedURLCache:URLCache];
+    
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
     MenuViewController *m = [[MenuViewController alloc] initWithStyle:UITableViewStyleGrouped];

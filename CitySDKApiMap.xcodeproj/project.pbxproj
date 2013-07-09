@@ -10,10 +10,11 @@
 		AC0DE41A1782D3A5005733E1 /* CSDKHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = AC0DE4191782D3A5005733E1 /* CSDKHTTPClient.m */; };
 		AC0DE41E1782D501005733E1 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC0DE41C1782D501005733E1 /* MenuViewController.m */; };
 		AC0DE41F1782D501005733E1 /* MenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC0DE41D1782D501005733E1 /* MenuViewController.xib */; };
-		AC0DE4221782D5D8005733E1 /* CSDKRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = AC0DE4211782D5D8005733E1 /* CSDKRequest.m */; };
+		AC0DE4221782D5D8005733E1 /* CSDKNodesRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = AC0DE4211782D5D8005733E1 /* CSDKNodesRequest.m */; };
 		AC5D66521789CE10007BE768 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5D66501789CE10007BE768 /* MapViewController.m */; };
 		AC5D66531789CE10007BE768 /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC5D66511789CE10007BE768 /* MapViewController.xib */; };
-		AC5D665C178B764F007BE768 /* CSDKResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5D665B178B764F007BE768 /* CSDKResponse.m */; };
+		AC5D665E178CB593007BE768 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC5D665D178CB593007BE768 /* Security.framework */; };
+		AC5D6661178CC99E007BE768 /* CSDKMapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5D6660178CC99E007BE768 /* CSDKMapAnnotation.m */; };
 		ACBC58DB177EE06200C9993B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBC58DA177EE06200C9993B /* UIKit.framework */; };
 		ACBC58DD177EE06200C9993B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBC58DC177EE06200C9993B /* Foundation.framework */; };
 		ACBC58DF177EE06200C9993B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBC58DE177EE06200C9993B /* CoreGraphics.framework */; };
@@ -70,13 +71,14 @@
 		AC0DE41B1782D501005733E1 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
 		AC0DE41C1782D501005733E1 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		AC0DE41D1782D501005733E1 /* MenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuViewController.xib; sourceTree = "<group>"; };
-		AC0DE4201782D5D8005733E1 /* CSDKRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSDKRequest.h; sourceTree = "<group>"; };
-		AC0DE4211782D5D8005733E1 /* CSDKRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSDKRequest.m; sourceTree = "<group>"; };
+		AC0DE4201782D5D8005733E1 /* CSDKNodesRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSDKNodesRequest.h; sourceTree = "<group>"; };
+		AC0DE4211782D5D8005733E1 /* CSDKNodesRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSDKNodesRequest.m; sourceTree = "<group>"; };
 		AC5D664F1789CE0F007BE768 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		AC5D66501789CE10007BE768 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		AC5D66511789CE10007BE768 /* MapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MapViewController.xib; sourceTree = "<group>"; };
-		AC5D665A178B764E007BE768 /* CSDKResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSDKResponse.h; sourceTree = "<group>"; };
-		AC5D665B178B764F007BE768 /* CSDKResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSDKResponse.m; sourceTree = "<group>"; };
+		AC5D665D178CB593007BE768 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		AC5D665F178CC99E007BE768 /* CSDKMapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSDKMapAnnotation.h; sourceTree = "<group>"; };
+		AC5D6660178CC99E007BE768 /* CSDKMapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSDKMapAnnotation.m; sourceTree = "<group>"; };
 		ACBC58D7177EE06200C9993B /* CitySDKApiMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CitySDKApiMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACBC58DA177EE06200C9993B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		ACBC58DC177EE06200C9993B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -137,6 +139,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC5D665E178CB593007BE768 /* Security.framework in Frameworks */,
 				ACBC593E177F0F0100C9993B /* CoreLocation.framework in Frameworks */,
 				ACBC5924177EE4DA00C9993B /* libMBProgressHUD.a in Frameworks */,
 				ACBC5928177EE50600C9993B /* MobileCoreServices.framework in Frameworks */,
@@ -156,10 +159,10 @@
 			children = (
 				AC0DE4181782D3A5005733E1 /* CSDKHTTPClient.h */,
 				AC0DE4191782D3A5005733E1 /* CSDKHTTPClient.m */,
-				AC0DE4201782D5D8005733E1 /* CSDKRequest.h */,
-				AC0DE4211782D5D8005733E1 /* CSDKRequest.m */,
-				AC5D665A178B764E007BE768 /* CSDKResponse.h */,
-				AC5D665B178B764F007BE768 /* CSDKResponse.m */,
+				AC0DE4201782D5D8005733E1 /* CSDKNodesRequest.h */,
+				AC0DE4211782D5D8005733E1 /* CSDKNodesRequest.m */,
+				AC5D665F178CC99E007BE768 /* CSDKMapAnnotation.h */,
+				AC5D6660178CC99E007BE768 /* CSDKMapAnnotation.m */,
 			);
 			path = CitySDKClient;
 			sourceTree = "<group>";
@@ -188,6 +191,7 @@
 		ACBC58D9177EE06200C9993B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AC5D665D178CB593007BE768 /* Security.framework */,
 				ACBC593D177F0F0100C9993B /* CoreLocation.framework */,
 				ACBC5927177EE50600C9993B /* MobileCoreServices.framework */,
 				ACBC5925177EE4F900C9993B /* SystemConfiguration.framework */,
@@ -410,9 +414,9 @@
 				ACBC593C177EE59600C9993B /* CSDKResults.m in Sources */,
 				AC0DE41A1782D3A5005733E1 /* CSDKHTTPClient.m in Sources */,
 				AC0DE41E1782D501005733E1 /* MenuViewController.m in Sources */,
-				AC0DE4221782D5D8005733E1 /* CSDKRequest.m in Sources */,
+				AC0DE4221782D5D8005733E1 /* CSDKNodesRequest.m in Sources */,
 				AC5D66521789CE10007BE768 /* MapViewController.m in Sources */,
-				AC5D665C178B764F007BE768 /* CSDKResponse.m in Sources */,
+				AC5D6661178CC99E007BE768 /* CSDKMapAnnotation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

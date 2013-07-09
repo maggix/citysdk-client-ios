@@ -8,9 +8,7 @@
 
 #import "ViewController.h"
 #import "DataModels.h"
-#import "AFNetworking.h"
-
-#define kCitySDKApiBaseUrl @"http://api.citysdk.waag.org/"
+#import "CSDKHTTPClient.h"
 
 @interface ViewController ()
 
@@ -79,10 +77,9 @@
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        
-        NSURL *url = [NSURL URLWithString:kCitySDKApiBaseUrl];
-        AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
-        [httpClient getPath:path parameters:paramsDict success:^(AFHTTPRequestOperation *operation, id responseObject) {
+ 
+
+        [[CSDKHTTPClient sharedClient] getPath:path parameters:paramsDict success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
             __autoreleasing NSError* dataError = nil;
             NSDictionary *r = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:&dataError];
@@ -137,14 +134,14 @@
                    }
                     if ([r.geom.type isEqualToString:@"Point"]) {
                         //point
+                        double lon = [[[r.geom.coordinates objectAtIndex:0] stringValue] doubleValue];
                         double lat = [[[r.geom.coordinates objectAtIndex:1] stringValue] doubleValue];
-                        double lon = [[[r.geom.coordinates objectAtIndex:1] stringValue] doubleValue];
 //                        CLLocation *p = [[CLLocation alloc] initWithLatitude:lat longitude: lon];
                         CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * 1);
                         coordinateArray[0] = CLLocationCoordinate2DMake(lat, lon);
                         MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:1];
                         [result addObject:pl];
-                        [_allCoordinates addObject:[[CLLocation alloc] initWithLatitude:lon longitude:lon]];
+                        [_allCoordinates addObject:[[CLLocation alloc] initWithLatitude:lat longitude:lon]];
                         free(coordinateArray);
                    }
                     

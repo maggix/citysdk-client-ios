@@ -10,10 +10,10 @@
 #import <MapKit/MapKit.h>
 #import <MBProgressHUD/MBProgressHUD.h>
 
-@class CSDKRequest;
+@class CSDKNodesRequest;
 
 @interface MapViewController : UIViewController <UIAlertViewDelegate, MKMapViewDelegate>
 
-@property (nonatomic, strong) CSDKRequest *request;
+@property (nonatomic, strong) CSDKNodesRequest *request;
 
 @end

@@ -6,15 +6,15 @@
 //  Copyright (c) 2013 Giovanni Maggini. All rights reserved.
 //
 
-#import "CSDKRequest.h"
+#import "CSDKNodesRequest.h"
 
-@implementation CSDKRequest
+@implementation CSDKNodesRequest
 
 - (id)init
 {
     self = [super init];
     if (self) {
-        [CSDKRequest initCSDKLayerKeys];
+        [CSDKNodesRequest initCSDKLayerKeys];
     }
     return self;
 }
@@ -23,17 +23,13 @@
 {
     if(CSDKLayersKeys == nil)
     {
-        CSDKLayersKeys = [[NSArray alloc] initWithObjects:
-        @"layer",
-        @"osm:tourism",
-        @"osm::railway",
-        nil];
+        CSDKLayersKeys = @[@"layer", @"osm::railway", @"osm::tourism"];
     }
 }
 
-+ (CSDKRequest*)requestWithAdmr:(NSString*)admr layerKey:(NSString*)layerKey layerValue:(NSString*)layerValue latitude:(double)latitude longitude:(double)longitude perPage:(int)perPage radius:(int)radius
++ (CSDKNodesRequest*)requestWithAdmr:(NSString*)admr layerKey:(NSString*)layerKey layerValue:(NSString*)layerValue latitude:(double)latitude longitude:(double)longitude perPage:(int)perPage radius:(int)radius
 {
-    CSDKRequest *r = [[CSDKRequest alloc] init];
+    CSDKNodesRequest *r = [[CSDKNodesRequest alloc] init];
     r.admr = admr;
     r.layerKey = layerKey;
     r.layerValue = layerValue;
@@ -44,12 +40,40 @@
     return r;
 }
 
++ (CSDKNodesRequest*)requestWithAdmr:(NSString*)admr layerKey:(NSString*)layerKey layerValue:(NSString*)layerValue perPage:(int)perPage
+{
+    CSDKNodesRequest *r = [[CSDKNodesRequest alloc] init];
+    r.admr = admr;
+    r.layerKey = layerKey;
+    r.layerValue = layerValue;
+    r.per_page = perPage;
+    return r;
+}
+
++ (CSDKNodesRequest*)requestWithAdmr:(NSString*)admr layerKey:(NSString*)layerKey layerValue:(NSString*)layerValue name:(NSString*)name latitude:(double)latitude longitude:(double)longitude perPage:(int)perPage radius:(int)radius
+{
+    CSDKNodesRequest *r = [[CSDKNodesRequest alloc] init];
+    r.admr = admr;
+    r.layerKey = layerKey;
+    r.layerValue = layerValue;
+    r.name = name;
+    r.latitude = latitude;
+    r.longitude = longitude;
+    r.per_page = perPage;
+    r.radius = radius;
+    return r;
+}
+
+
 
 - (NSDictionary*)requestParamsForRequest
 {
     NSMutableDictionary *returnDict = [[NSMutableDictionary alloc] init]; //WithObjectsAndKeys:
     if(_layerValue != nil && _layerKey != nil){
         [returnDict setObject:_layerValue forKey:_layerKey];
+    }
+    if(_name){
+        [returnDict setObject:_name forKey:@"name"];
     }
     if(_latitude && _longitude){
         [returnDict setObject:[NSNumber numberWithDouble:_latitude] forKey:@"lat"];

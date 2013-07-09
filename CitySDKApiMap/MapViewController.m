@@ -7,7 +7,7 @@
 //
 
 #import "MapViewController.h"
-#import "CSDKRequest.h"
+#import "CSDKNodesRequest.h"
 #import "DataModels.h"
 #import "CSDKHTTPClient.h"
 
@@ -52,21 +52,13 @@
     _allCoordinates = [[NSMutableArray alloc] init];
     
     //build the path for the request
-    NSString *path = @"/";
+    NSString *path = @"";
     path = [path stringByAppendingString:[_request baseUrlForRequest]];
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-
-
-        NSURL *url = [NSURL URLWithString:kCitySDKApiBaseUrl];
         
-        CSDKHTTPClient *client = [CSDKHTTPClient sharedClient];
-//        [client getResults];
-        //Results should be a 
-        
-        AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
-        [httpClient getPath:path parameters:[_request requestParamsForRequest] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[CSDKHTTPClient sharedClient] getPath:path parameters:[_request requestParamsForRequest] success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"operation: %@", [operation description]);
             NSLog(@"operation: %@", [[operation request] URL]);
             __autoreleasing NSError* dataError = nil;
@@ -102,6 +94,8 @@
                                 NSInteger coordCount = [polylineCoord count];
                                 CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * coordCount);
                                 
+                                NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+                                [f setNumberStyle:NSNumberFormatterDecimalStyle];
                                 for(NSArray *coord in polylineCoord){
                                     double lon = [[[coord objectAtIndex:0] stringValue] floatValue];
                                     double lat = [[[coord objectAtIndex:1] stringValue] floatValue];
@@ -121,14 +115,13 @@
                     }
                     if ([r.geom.type isEqualToString:@"Point"]) {
                         //point
+                        double lon = [[[r.geom.coordinates objectAtIndex:0] stringValue] doubleValue];
                         double lat = [[[r.geom.coordinates objectAtIndex:1] stringValue] doubleValue];
-                        double lon = [[[r.geom.coordinates objectAtIndex:1] stringValue] doubleValue];
-                        CLLocation *p = [[CLLocation alloc] initWithLatitude:lat longitude: lon];
                         CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * 1);
                         coordinateArray[0] = CLLocationCoordinate2DMake(lat, lon);
                         MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:1];
                         [result addObject:pl];
-                        [_allCoordinates addObject:[[CLLocation alloc] initWithLatitude:lon longitude:lon]];
+                        [_allCoordinates addObject:[[CLLocation alloc] initWithLatitude:lat longitude:lon]];
                         free(coordinateArray);
                     }
                     
@@ -157,16 +150,12 @@
                 }];
                 
                 //Update map
-                
-
                 [_mapView addOverlays:result];
                 
-                //set region to display
-                
+                //set region to display                
                 [_mapView setRegion:[self getCenterRegionFromPoints:_allCoordinates] animated:YES];
-
+                
             }
-            
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"error: %@",[error description] );
             UIAlertView *a = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error while loading", nil) message:[NSString stringWithFormat:@"%@", [error description]] delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles: nil];

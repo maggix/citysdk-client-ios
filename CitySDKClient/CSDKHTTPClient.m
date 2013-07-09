@@ -8,6 +8,7 @@
 
 #import "CSDKHTTPClient.h"
 #import "AFJSONRequestOperation.h"
+#import "AFURLConnectionOperation.h"
 
 #define kCitySDKApiBaseUrl @"http://api.citysdk.waag.org/"
 
@@ -30,6 +31,8 @@
     }
     
     [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
+    [self registerHTTPOperationClass:[AFHTTPRequestOperation class]];
+
     
     // Accept HTTP Header; see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1
 	[self setDefaultHeader:@"Accept" value:@"application/json"];

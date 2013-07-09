@@ -3,6 +3,8 @@
 //
 
 #import <Availability.h>
+#define _AFNETWORKING_PIN_SSL_CERTIFICATES_
+
 
 #ifndef __IPHONE_4_0
 #warning "This project uses features only available in iOS SDK 4.0 and later."
