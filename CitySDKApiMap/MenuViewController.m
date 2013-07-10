@@ -33,6 +33,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self setTitle:@"Choose a request for CitySDK"];
     [self initObjects];
     [self initLocationObjects];
     
@@ -70,17 +71,16 @@
         //Highways in a 10km radius around Utrecht
         //nodes?lat=52.090774&lon=5.121281&radius=10000&per_page=1000&osm::highway=motorway
         //Not working!! Because node_type = LineString
-//        [_objects addObject:
-//         [NSDictionary dictionaryWithObjectsAndKeys:@"Highways in a 10km radius around Utrecht", @"title",
-//          [CSDKNodesRequest requestWithAdmr:nil layerKey:@"osm::highway" layerValue:@"motorway" latitude:52.09077 longitude:5.121281 perPage:1000 radius:10000], @"request"
-//          ,nil]];
+        [_objects addObject:
+         [NSDictionary dictionaryWithObjectsAndKeys:@"Highways in a 10km radius around Utrecht", @"title",
+          [CSDKNodesRequest requestWithAdmr:nil layerKey:@"osm::highway" layerValue:@"motorway" latitude:52.09077 longitude:5.121281 perPage:1000 radius:10000], @"request"
+          ,nil]];
         
         //routes named "Stedenroute"
         //nodes?name=stedenroute&layer=osm
-        //Not working!!! Because node type = route
-//        [_objects addObject:
-//         [NSDictionary dictionaryWithObjectsAndKeys:@"Routes named \"StedenRoute\"", @"title",
-//          [CSDKNodesRequest requestWithAdmr:nil layerKey:@"layer" layerValue:@"osm" name:@"stedenroute" latitude:0 longitude:0 perPage:0 radius:0], @"request", nil]];
+        [_objects addObject:
+         [NSDictionary dictionaryWithObjectsAndKeys:@"Routes named \"StedenRoute\"", @"title",
+          [CSDKNodesRequest requestWithAdmr:nil layerKey:@"layer" layerValue:@"osm" name:@"stedenroute" latitude:0 longitude:0 perPage:0 radius:0], @"request", nil]];
         
         //Railway stations in Zoetermeer
         //admr.nl.zoetermeer/nodes?osm::railway=station&geom&per_page=100
@@ -161,7 +161,8 @@
 
             break;
     }
-
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.textLabel.adjustsFontSizeToFitWidth = YES;
     return cell;
 }
 
@@ -169,7 +170,7 @@
 {
     switch (section) {
         case 0:
-            return NSLocalizedString(@"Choose a request for CitySDK", nil);
+            return NSLocalizedString(@"Demo requests", nil);
             break;
         case 1:
             return NSLocalizedString(@"GPS-based requests", nil);

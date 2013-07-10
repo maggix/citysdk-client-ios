@@ -87,7 +87,7 @@
                     {
                         //each one is a set of coordinates. For example the admr.nl.amsterdam is made of 3 different groups
                         for(NSArray *coordGrp in r.geom.coordinates){
-                            //for each group I need to loop again (this is unclear why?)
+                            //for each group I need to loop again 
                             for (NSArray *polylineCoord in coordGrp) {
                                 
                                 int caIndex = 0;
@@ -147,6 +147,39 @@
                             free(coordinateArray);
                         }
                     }
+                    
+                    if ([r.geom.type isEqualToString:@"MultiLineString"]) {
+                     //each one is a set of coordinate that define a line (not a polygon)
+                    //it parses just as Polygon does
+                        for(NSArray *coordGrp in r.geom.coordinates){
+                            int caIndex = 0;
+                            NSInteger coordCount = [coordGrp count];
+                            CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * coordCount);
+                            
+                            for(NSArray *coord in coordGrp){
+                                
+                                double lon = [[[coord objectAtIndex:0] stringValue] floatValue];
+                                double lat = [[[coord objectAtIndex:1] stringValue] floatValue];
+                                
+                                coordinateArray[caIndex] = CLLocationCoordinate2DMake(lat, lon);
+                                [_allCoordinates addObject:[[CLLocation alloc] initWithLatitude:lat longitude:lon]];
+                                caIndex++;
+                            }
+                            
+                            MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:coordCount];
+                            [result addObject:pl];
+                            free(coordinateArray);
+                        }
+
+                    }
+                 if ([r.geom.type isEqualToString:@"LineString"]) {
+                     //each one is a set of coordinate that define a line (not a polygon)
+                     //TODO: still have to deal with it
+                 }
+                 if ([r.geom.type isEqualToString:@"GeometryCollection"]) {
+                     //This is a container for different types of geometries (can contain points, LineString, MultiLineString, Polygon, etc.
+                      //TODO: still have to deal with it
+                 }
                 }];
                 
                 //Update map
