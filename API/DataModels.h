@@ -5,4 +5,11 @@
 //  Copyright (c) 2013 gixWorks. All rights reserved.
 //
 
-#import "CSDKGeom.h"#import "CSDKData.h"#import "CSDKOsm.h"#import "CSDKResults.h"#import "CSDKresponse.h"#import "CSDKLayers.h"
+#import "CSDKGeom.h"
+#import "CSDKResults.h"
+#import "CSDKresponse.h"
+
+//Data types
+#import "CSDKOSMData.h"
+#import "CSDKArtsHollandData.h"
+

@@ -173,8 +173,22 @@
 
                     }
                  if ([r.geom.type isEqualToString:@"LineString"]) {
-                     //each one is a set of coordinate that define a line (not a polygon)
-                     //TODO: still have to deal with it
+                        //r.geom.coordinates is just an array of coordinates, so I iterate only 1 time
+                        int caIndex = 0;
+                        NSInteger coordCount = [r.geom.coordinates count];
+                        CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * coordCount);
+
+                        for(NSArray *coordGrp in r.geom.coordinates){
+                            double lon = [[[coordGrp objectAtIndex:0] stringValue] floatValue];
+                            double lat = [[[coordGrp objectAtIndex:1] stringValue] floatValue];
+
+                            coordinateArray[caIndex] = CLLocationCoordinate2DMake(lat, lon);
+                            [_allCoordinates addObject:[[CLLocation alloc] initWithLatitude:lat longitude:lon]];
+                            caIndex++;
+                        }
+                        MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:coordCount];
+                        [result addObject:pl];
+                        free(coordinateArray);
                  }
                  if ([r.geom.type isEqualToString:@"GeometryCollection"]) {
                      //This is a container for different types of geometries (can contain points, LineString, MultiLineString, Polygon, etc.
@@ -234,6 +248,7 @@
         MKPolylineView *lineView = [[MKPolylineView alloc] initWithPolyline:overlay];
         lineView.lineWidth = 5;
         lineView.strokeColor = [UIColor redColor];
+        //Todo: fill with a semi-transparent color
         lineView.fillColor = [UIColor redColor];
         return lineView;
     }

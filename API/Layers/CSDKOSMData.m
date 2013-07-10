@@ -5,16 +5,16 @@
 //  Copyright (c) 2013 gixWorks. All rights reserved.
 //
 
-#import "CSDKData.h"
+#import "CSDKOSMData.h"
 
 
-@interface CSDKData ()
+@interface CSDKOSMData ()
 
 - (id)objectOrNilForKey:(id)aKey fromDictionary:(NSDictionary *)dict;
 
 @end
 
-@implementation CSDKData
+@implementation CSDKOSMData
 
 @synthesize platforms = _platforms;
 @synthesize subway = _subway;
@@ -28,9 +28,9 @@
 @synthesize railway = _railway;
 
 
-+ (CSDKData *)modelObjectWithDictionary:(NSDictionary *)dict
++ (CSDKOSMData *)modelObjectWithDictionary:(NSDictionary *)dict
 {
-    CSDKData *instance = [[CSDKData alloc] initWithDictionary:dict];
+    CSDKOSMData *instance = [[CSDKOSMData alloc] initWithDictionary:dict];
     return instance;
 }
 

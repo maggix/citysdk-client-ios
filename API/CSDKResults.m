@@ -6,7 +6,6 @@
 //
 
 #import "CSDKResults.h"
-#import "CSDKLayers.h"
 #import "CSDKGeom.h"
 
 
@@ -39,7 +38,7 @@
     // This check serves to make sure that a non-NSDictionary object
     // passed into the model class doesn't break the parsing.
     if(self && [dict isKindOfClass:[NSDictionary class]]) {
-            self.layers = [CSDKLayers modelObjectWithDictionary:[dict objectForKey:@"layers"]];
+            self.layers = [dict objectForKey:@"layers"];
             self.geom = [CSDKGeom modelObjectWithDictionary:[dict objectForKey:@"geom"]];
             self.nodeType = [self objectOrNilForKey:@"node_type" fromDictionary:dict];
             self.layer = [self objectOrNilForKey:@"layer" fromDictionary:dict];
@@ -55,7 +54,7 @@
 - (NSDictionary *)dictionaryRepresentation
 {
     NSMutableDictionary *mutableDict = [NSMutableDictionary dictionary];
-    [mutableDict setValue:[self.layers dictionaryRepresentation] forKey:@"layers"];
+    [mutableDict setValue:self.layers forKey:@"layers"];
     [mutableDict setValue:[self.geom dictionaryRepresentation] forKey:@"geom"];
     [mutableDict setValue:self.nodeType forKey:@"node_type"];
     [mutableDict setValue:self.layer forKey:@"layer"];

@@ -9,7 +9,7 @@
 
 
 
-@interface CSDKData : NSObject <NSCoding>
+@interface CSDKOSMData : NSObject <NSCoding>
 
 @property (nonatomic, strong) NSString *platforms;
 @property (nonatomic, strong) NSString *subway;
@@ -22,7 +22,7 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *railway;
 
-+ (CSDKData *)modelObjectWithDictionary:(NSDictionary *)dict;
++ (CSDKOSMData *)modelObjectWithDictionary:(NSDictionary *)dict;
 - (id)initWithDictionary:(NSDictionary *)dict;
 - (NSDictionary *)dictionaryRepresentation;
 
