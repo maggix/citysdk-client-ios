@@ -16,7 +16,7 @@
 		AC5D665E178CB593007BE768 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC5D665D178CB593007BE768 /* Security.framework */; };
 		AC5D6661178CC99E007BE768 /* CSDKMapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5D6660178CC99E007BE768 /* CSDKMapAnnotation.m */; };
 		AC5D6666178E009E007BE768 /* CSDKOSMData.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5D6665178E009E007BE768 /* CSDKOSMData.m */; };
-		AC5D6669178E0170007BE768 /* CSDKArtsHollandData.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5D6668178E0170007BE768 /* CSDKArtsHollandData.m */; };
+		AC5D666C178E0D75007BE768 /* CSDKArtsHollandData.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5D666B178E0D75007BE768 /* CSDKArtsHollandData.m */; };
 		ACBC58DB177EE06200C9993B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBC58DA177EE06200C9993B /* UIKit.framework */; };
 		ACBC58DD177EE06200C9993B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBC58DC177EE06200C9993B /* Foundation.framework */; };
 		ACBC58DF177EE06200C9993B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBC58DE177EE06200C9993B /* CoreGraphics.framework */; };
@@ -80,8 +80,8 @@
 		AC5D6660178CC99E007BE768 /* CSDKMapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSDKMapAnnotation.m; sourceTree = "<group>"; };
 		AC5D6664178E009E007BE768 /* CSDKOSMData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSDKOSMData.h; sourceTree = "<group>"; };
 		AC5D6665178E009E007BE768 /* CSDKOSMData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSDKOSMData.m; sourceTree = "<group>"; };
-		AC5D6667178E0170007BE768 /* CSDKArtsHollandData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSDKArtsHollandData.h; path = ../../../../../../../Downloads/CSDKArtsHollandData.h; sourceTree = "<group>"; };
-		AC5D6668178E0170007BE768 /* CSDKArtsHollandData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CSDKArtsHollandData.m; path = ../../../../../../../Downloads/CSDKArtsHollandData.m; sourceTree = "<group>"; };
+		AC5D666A178E0D75007BE768 /* CSDKArtsHollandData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSDKArtsHollandData.h; sourceTree = "<group>"; };
+		AC5D666B178E0D75007BE768 /* CSDKArtsHollandData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSDKArtsHollandData.m; sourceTree = "<group>"; };
 		ACBC58D7177EE06200C9993B /* CitySDKApiMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CitySDKApiMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACBC58DA177EE06200C9993B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		ACBC58DC177EE06200C9993B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -167,8 +167,8 @@
 		AC5D6663178E009E007BE768 /* Layers */ = {
 			isa = PBXGroup;
 			children = (
-				AC5D6667178E0170007BE768 /* CSDKArtsHollandData.h */,
-				AC5D6668178E0170007BE768 /* CSDKArtsHollandData.m */,
+				AC5D666A178E0D75007BE768 /* CSDKArtsHollandData.h */,
+				AC5D666B178E0D75007BE768 /* CSDKArtsHollandData.m */,
 				AC5D6664178E009E007BE768 /* CSDKOSMData.h */,
 				AC5D6665178E009E007BE768 /* CSDKOSMData.m */,
 			);
@@ -418,7 +418,7 @@
 				AC5D66521789CE10007BE768 /* MapViewController.m in Sources */,
 				AC5D6661178CC99E007BE768 /* CSDKMapAnnotation.m in Sources */,
 				AC5D6666178E009E007BE768 /* CSDKOSMData.m in Sources */,
-				AC5D6669178E0170007BE768 /* CSDKArtsHollandData.m in Sources */,
+				AC5D666C178E0D75007BE768 /* CSDKArtsHollandData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
