@@ -13,9 +13,10 @@
 
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *subtitle;
-@property (nonatomic, assign) CLLocationCoordinate2D *coordinate;
+@property (nonatomic, assign) CLLocationCoordinate2D coordinate;
 
 - (MKMapItem*)mapItem;
+- (id)initWithTitle:(NSString*)title subtitle:(NSString*)subtitle coordinate:(CLLocationCoordinate2D)coordinate;
 
 
 @end

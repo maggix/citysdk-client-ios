@@ -16,7 +16,8 @@ query are different from those when querying the Museums).
 Upcoming features
 -------
 * Managing GeometryCollections
-* Adding annotations to the map (thus making the results selectable)
+* Improving annotations added to the map (as of now, they are represented as MKAnnotationPin)
+* When selecting an annotation, display a table with all the information from different layers instead than opening driving directions
 
 Future development
 -------

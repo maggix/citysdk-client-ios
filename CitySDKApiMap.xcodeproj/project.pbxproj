@@ -17,6 +17,7 @@
 		AC5D6661178CC99E007BE768 /* CSDKMapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5D6660178CC99E007BE768 /* CSDKMapAnnotation.m */; };
 		AC5D6666178E009E007BE768 /* CSDKOSMData.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5D6665178E009E007BE768 /* CSDKOSMData.m */; };
 		AC5D666C178E0D75007BE768 /* CSDKArtsHollandData.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5D666B178E0D75007BE768 /* CSDKArtsHollandData.m */; };
+		AC5D6698178EA83B007BE768 /* CSDKMapAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5D6697178EA83B007BE768 /* CSDKMapAnnotationView.m */; };
 		ACBC58DB177EE06200C9993B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBC58DA177EE06200C9993B /* UIKit.framework */; };
 		ACBC58DD177EE06200C9993B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBC58DC177EE06200C9993B /* Foundation.framework */; };
 		ACBC58DF177EE06200C9993B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBC58DE177EE06200C9993B /* CoreGraphics.framework */; };
@@ -82,6 +83,8 @@
 		AC5D6665178E009E007BE768 /* CSDKOSMData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSDKOSMData.m; sourceTree = "<group>"; };
 		AC5D666A178E0D75007BE768 /* CSDKArtsHollandData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSDKArtsHollandData.h; sourceTree = "<group>"; };
 		AC5D666B178E0D75007BE768 /* CSDKArtsHollandData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSDKArtsHollandData.m; sourceTree = "<group>"; };
+		AC5D6696178EA83B007BE768 /* CSDKMapAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSDKMapAnnotationView.h; sourceTree = "<group>"; };
+		AC5D6697178EA83B007BE768 /* CSDKMapAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSDKMapAnnotationView.m; sourceTree = "<group>"; };
 		ACBC58D7177EE06200C9993B /* CitySDKApiMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CitySDKApiMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACBC58DA177EE06200C9993B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		ACBC58DC177EE06200C9993B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -160,6 +163,8 @@
 				AC0DE4211782D5D8005733E1 /* CSDKNodesRequest.m */,
 				AC5D665F178CC99E007BE768 /* CSDKMapAnnotation.h */,
 				AC5D6660178CC99E007BE768 /* CSDKMapAnnotation.m */,
+				AC5D6696178EA83B007BE768 /* CSDKMapAnnotationView.h */,
+				AC5D6697178EA83B007BE768 /* CSDKMapAnnotationView.m */,
 			);
 			path = CitySDKClient;
 			sourceTree = "<group>";
@@ -419,6 +424,7 @@
 				AC5D6661178CC99E007BE768 /* CSDKMapAnnotation.m in Sources */,
 				AC5D6666178E009E007BE768 /* CSDKOSMData.m in Sources */,
 				AC5D666C178E0D75007BE768 /* CSDKArtsHollandData.m in Sources */,
+				AC5D6698178EA83B007BE768 /* CSDKMapAnnotationView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

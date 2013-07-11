@@ -10,10 +10,21 @@
 
 @implementation CSDKMapAnnotation
 
+- (id)initWithTitle:(NSString*)title subtitle:(NSString*)subtitle coordinate:(CLLocationCoordinate2D)coordinate
+{
+    self = [super init];
+    if (self) {
+        _title = title;
+        _subtitle = subtitle;
+        _coordinate = coordinate;
+    }
+    return self;
+}
+
 - (MKMapItem*)mapItem
 {
     MKPlacemark *placemark = [[MKPlacemark alloc]
-                              initWithCoordinate:*(self.coordinate)
+                              initWithCoordinate:(self.coordinate)
                               addressDictionary:nil];
     
     MKMapItem *mapItem = [[MKMapItem alloc] initWithPlacemark:placemark];

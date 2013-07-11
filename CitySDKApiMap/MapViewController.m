@@ -10,12 +10,14 @@
 #import "CSDKNodesRequest.h"
 #import "DataModels.h"
 #import "CSDKHTTPClient.h"
+#import "CSDKMapAnnotation.h"
 
 @interface MapViewController ()
 
 @property (nonatomic, weak) IBOutlet MKMapView *mapView;
 @property (nonatomic, strong) CSDKResults *results;
 @property (nonatomic, strong) NSMutableArray *allCoordinates;
+@property (nonatomic, strong) NSMutableArray *mapAnnotations;
 
 @end
 
@@ -35,6 +37,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [_mapView setDelegate:self];
+    [_mapView setShowsUserLocation:YES];
     [self loadResults];
 
 }
@@ -45,11 +48,32 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)mapTypeChange:(id)sender {
+    switch (((UISegmentedControl*)sender).selectedSegmentIndex) {
+        case 0:
+            self.mapView.mapType = MKMapTypeStandard;
+            break;
+        case 1:
+            self.mapView.mapType = MKMapTypeHybrid;
+            break;
+        case 2:
+            self.mapView.mapType = MKMapTypeSatellite;
+            break;
+        default:
+            break;
+    }
+}
+
+
 - (void)loadResults
 {
-    
+    //cleanup
     [_mapView removeOverlays:_mapView.overlays];
+    [_mapView removeAnnotations:_mapView.annotations];
+
+    //reinitialize arrays to store objects to
     _allCoordinates = [[NSMutableArray alloc] init];
+    _mapAnnotations = [[NSMutableArray alloc] init];
     
     //build the path for the request
     NSString *path = @"";
@@ -112,6 +136,8 @@
                             }
                         }
                         
+                        //TODO: annoation for MultiPolygon
+                        
                     }
                     if ([r.geom.type isEqualToString:@"Point"]) {
                         //point
@@ -123,6 +149,12 @@
                         [result addObject:pl];
                         [_allCoordinates addObject:[[CLLocation alloc] initWithLatitude:lat longitude:lon]];
                         free(coordinateArray);
+                        
+                        CLLocationCoordinate2D c;
+                        c.latitude = lat;
+                        c.longitude = lon;
+                        CSDKMapAnnotation *annotation = [[CSDKMapAnnotation alloc] initWithTitle:r.name subtitle:r.cdkId coordinate:c];
+                        [_mapView addAnnotation:annotation];
                     }
                     
                     if ([r.geom.type isEqualToString:@"Polygon"]) {
@@ -146,6 +178,8 @@
                             [result addObject:pl];
                             free(coordinateArray);
                         }
+                        
+                        //TODO: annoation for Polygon
                     }
                     
                     if ([r.geom.type isEqualToString:@"MultiLineString"]) {
@@ -170,6 +204,7 @@
                             [result addObject:pl];
                             free(coordinateArray);
                         }
+                        //TODO: annotation for MultiLineString
 
                     }
                  if ([r.geom.type isEqualToString:@"LineString"]) {
@@ -189,12 +224,19 @@
                         MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:coordCount];
                         [result addObject:pl];
                         free(coordinateArray);
+                     
+                     //TODO: annoation for LineString
                  }
                  if ([r.geom.type isEqualToString:@"GeometryCollection"]) {
                      //This is a container for different types of geometries (can contain points, LineString, MultiLineString, Polygon, etc.
                       //TODO: still have to deal with it
                  }
                 }];
+                
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [MBProgressHUD hideHUDForView:self.view animated:YES];
+                });
                 
                 //Update map
                 [_mapView addOverlays:result];
@@ -205,13 +247,16 @@
             }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"error: %@",[error description] );
+            //Hide hud
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+            });
+            
             UIAlertView *a = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error while loading", nil) message:[NSString stringWithFormat:@"%@", [error description]] delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles: nil];
             [a show];
         }];
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
-        });
+
     });
 }
 
@@ -253,6 +298,43 @@
         return lineView;
     }
     return nil;
+}
+
+#pragma mark -
+#pragma mark Annotations
+
+//To return a generic annotationview, use:
+//- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
+//}
+
+- (MKPinAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
+    static NSString *identifier = @"CSDKAnnotation";
+    if ([annotation isKindOfClass:[CSDKMapAnnotation class]]) {
+        
+        MKPinAnnotationView *annotationView = (MKPinAnnotationView *) [_mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
+        if (annotationView == nil) {
+            annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
+            annotationView.enabled = YES;
+            annotationView.pinColor = MKPinAnnotationColorRed;
+            annotationView.canShowCallout = YES;
+            annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+//            annotationView.image = [UIImage imageNamed:@"something"];//here we use a nice image instead of the default pins
+        } else {
+            annotationView.annotation = annotation;
+        }
+        
+        return annotationView;
+    }
+    
+    return nil;
+}
+
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
+{
+    CSDKMapAnnotation *location = (CSDKMapAnnotation*)view.annotation;
+    
+    NSDictionary *launchOptions = @{MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving};
+    [location.mapItem openInMapsWithLaunchOptions:launchOptions];
 }
 
 @end

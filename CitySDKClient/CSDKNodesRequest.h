@@ -10,8 +10,6 @@
 
 static NSArray *CSDKLayersKeys;
 
-@interface CSDKNodesRequest : NSObject
-
 //Some requests have "layer=..." others have "osm::tourism"
 typedef NS_ENUM(NSUInteger, CSDKLayerKeys) {
     kCSDKGenericLayer = 0,
@@ -25,6 +23,8 @@ typedef NS_ENUM(NSUInteger, CSDKLayerTypes)
     kCSDKOSMLayerRailwayStation = 1,
     kCSDKOSMLayerTourismMuseum = 2,
 };
+
+@interface CSDKNodesRequest : NSObject
 
 @property (nonatomic, strong) NSString *admr;
 @property (nonatomic, strong) NSString *layerKey;
