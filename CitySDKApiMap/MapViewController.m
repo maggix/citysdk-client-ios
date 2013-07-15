@@ -111,7 +111,7 @@
                     {
                         //each one is a set of coordinates. For example the admr.nl.amsterdam is made of 3 different groups
                         for(NSArray *coordGrp in r.geom.coordinates){
-                            //for each group I need to loop again 
+                            //for each group I need to loop again
                             for (NSArray *polylineCoord in coordGrp) {
                                 
                                 int caIndex = 0;
@@ -135,9 +135,13 @@
                                 
                             }
                         }
-                        
-                        //TODO: annoation for MultiPolygon
-                        
+                        //Annotation in the first coordinate of the Polyline
+                        CLLocationCoordinate2D *c = malloc(sizeof(CLLocationCoordinate2D));
+                        [[result lastObject] getCoordinates:c range:NSMakeRange(0, 1)];
+                        //c.longitude = [[[result lastObject] firstObject] longitude];
+                        CSDKMapAnnotation *annotation = [[CSDKMapAnnotation alloc] initWithTitle:r.name subtitle:r.cdkId coordinate:CLLocationCoordinate2DMake(c->latitude, c->longitude)];
+                        [_mapView addAnnotation:annotation];
+                        free(c);
                     }
                     if ([r.geom.type isEqualToString:@"Point"]) {
                         //point
@@ -150,6 +154,7 @@
                         [_allCoordinates addObject:[[CLLocation alloc] initWithLatitude:lat longitude:lon]];
                         free(coordinateArray);
                         
+                        //Annotation
                         CLLocationCoordinate2D c;
                         c.latitude = lat;
                         c.longitude = lon;
@@ -179,9 +184,16 @@
                             free(coordinateArray);
                         }
                         
-                        //TODO: annoation for Polygon
-                    }
+                        //Annotation in the first coordinate of the Polyline
+                        CLLocationCoordinate2D *c = malloc(sizeof(CLLocationCoordinate2D));
+                        [[result lastObject] getCoordinates:c range:NSMakeRange(0, 1)];
+                        //c.longitude = [[[result lastObject] firstObject] longitude];
+                        CSDKMapAnnotation *annotation = [[CSDKMapAnnotation alloc] initWithTitle:r.name subtitle:r.cdkId coordinate:CLLocationCoordinate2DMake(c->latitude, c->longitude)];
+                        [_mapView addAnnotation:annotation];
+                        free(c);
                     
+                    }
+                 
                     if ([r.geom.type isEqualToString:@"MultiLineString"]) {
                      //each one is a set of coordinate that define a line (not a polygon)
                     //it parses just as Polygon does
@@ -204,8 +216,13 @@
                             [result addObject:pl];
                             free(coordinateArray);
                         }
-                        //TODO: annotation for MultiLineString
-
+                        //Annotation in the first coordinate of the Polyline
+                        CLLocationCoordinate2D *c = malloc(sizeof(CLLocationCoordinate2D));
+                        [[result lastObject] getCoordinates:c range:NSMakeRange(0, 1)];
+                        //c.longitude = [[[result lastObject] firstObject] longitude];
+                        CSDKMapAnnotation *annotation = [[CSDKMapAnnotation alloc] initWithTitle:r.name subtitle:r.cdkId coordinate:CLLocationCoordinate2DMake(c->latitude, c->longitude)];
+                        [_mapView addAnnotation:annotation];
+                        free(c);
                     }
                  if ([r.geom.type isEqualToString:@"LineString"]) {
                         //r.geom.coordinates is just an array of coordinates, so I iterate only 1 time
@@ -225,7 +242,13 @@
                         [result addObject:pl];
                         free(coordinateArray);
                      
-                     //TODO: annoation for LineString
+                     //Annotation in the first coordinate of the Polyline
+                     CLLocationCoordinate2D *c = malloc(sizeof(CLLocationCoordinate2D));
+                     [[result lastObject] getCoordinates:c range:NSMakeRange(0, 1)];
+                     //c.longitude = [[[result lastObject] firstObject] longitude];
+                     CSDKMapAnnotation *annotation = [[CSDKMapAnnotation alloc] initWithTitle:r.name subtitle:r.cdkId coordinate:CLLocationCoordinate2DMake(c->latitude, c->longitude)];
+                     [_mapView addAnnotation:annotation];
+                     free(c);
                  }
                  if ([r.geom.type isEqualToString:@"GeometryCollection"]) {
                      //This is a container for different types of geometries (can contain points, LineString, MultiLineString, Polygon, etc.
