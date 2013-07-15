@@ -46,6 +46,8 @@
 		ACBC593B177EE59600C9993B /* CSDKresponse.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBC5933177EE59600C9993B /* CSDKresponse.m */; };
 		ACBC593C177EE59600C9993B /* CSDKResults.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBC5935177EE59600C9993B /* CSDKResults.m */; };
 		ACBC593E177F0F0100C9993B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBC593D177F0F0100C9993B /* CoreLocation.framework */; };
+		ACC5B63A1794A9160022EFE4 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC5B6391794A9160022EFE4 /* DetailViewController.m */; };
+		ACC5B63F1794B5E00022EFE4 /* DetailViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC5B63E1794B5E00022EFE4 /* DetailViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -132,6 +134,10 @@
 		ACBC5935177EE59600C9993B /* CSDKResults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSDKResults.m; sourceTree = "<group>"; };
 		ACBC5936177EE59600C9993B /* DataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataModels.h; sourceTree = "<group>"; };
 		ACBC593D177F0F0100C9993B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		ACC5B6381794A9160022EFE4 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		ACC5B6391794A9160022EFE4 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		ACC5B63D1794B5E00022EFE4 /* DetailViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewCell.h; sourceTree = "<group>"; };
+		ACC5B63E1794B5E00022EFE4 /* DetailViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,7 +236,11 @@
 				AC0DE41B1782D501005733E1 /* MenuViewController.h */,
 				AC0DE41C1782D501005733E1 /* MenuViewController.m */,
 				AC0DE41D1782D501005733E1 /* MenuViewController.xib */,
+				ACC5B6381794A9160022EFE4 /* DetailViewController.h */,
+				ACC5B6391794A9160022EFE4 /* DetailViewController.m */,
 				ACBC58E1177EE06200C9993B /* Supporting Files */,
+				ACC5B63D1794B5E00022EFE4 /* DetailViewCell.h */,
+				ACC5B63E1794B5E00022EFE4 /* DetailViewCell.m */,
 			);
 			path = CitySDKApiMap;
 			sourceTree = "<group>";
@@ -425,6 +435,8 @@
 				AC5D6666178E009E007BE768 /* CSDKOSMData.m in Sources */,
 				AC5D666C178E0D75007BE768 /* CSDKArtsHollandData.m in Sources */,
 				AC5D6698178EA83B007BE768 /* CSDKMapAnnotationView.m in Sources */,
+				ACC5B63A1794A9160022EFE4 /* DetailViewController.m in Sources */,
+				ACC5B63F1794B5E00022EFE4 /* DetailViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

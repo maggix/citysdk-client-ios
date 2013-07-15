@@ -11,11 +11,13 @@
 #import "DataModels.h"
 #import "CSDKHTTPClient.h"
 #import "CSDKMapAnnotation.h"
+#import "DetailViewController.h"
 
 @interface MapViewController ()
 
 @property (nonatomic, weak) IBOutlet MKMapView *mapView;
-@property (nonatomic, strong) CSDKResults *results;
+@property (nonatomic, strong) CSDKresponse *response;
+//@property (nonatomic, strong) CSDKResults *results;
 @property (nonatomic, strong) NSMutableArray *allCoordinates;
 @property (nonatomic, strong) NSMutableArray *mapAnnotations;
 
@@ -89,21 +91,23 @@
             NSDictionary *r = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:&dataError];
             
             //get JSON stuff
-            CSDKresponse *resp = [CSDKresponse modelObjectWithDictionary:r];
-            if ([resp.status isEqualToString:@"success"]) {
+//            CSDKresponse *resp = [CSDKresponse modelObjectWithDictionary:r];
+            _response = [CSDKresponse modelObjectWithDictionary:r];
+            if ([_response.status isEqualToString:@"success"]) {
                 NSLog(@"Success!");
+                
                 //                NSLog(@"Resp: %@", resp);
-                __block NSString *stringLayers = @"Layers: ";
-                [resp.results enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                    stringLayers = [stringLayers stringByAppendingString:[((CSDKResults*)obj) layer]];
-                    stringLayers = [stringLayers stringByAppendingString:@" "];
-                }];
+//                __block NSString *stringLayers = @"Layers: ";
+//                [_response.results enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+//                    stringLayers = [stringLayers stringByAppendingString:[((CSDKResults*)obj) layer]];
+//                    stringLayers = [stringLayers stringByAppendingString:@" "];
+//                }];
                 
                 
                 __block NSMutableArray *result = [[NSMutableArray alloc] init];
                 
                 //let's see each result from CitySDK
-                [resp.results enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                [_response.results enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     CSDKResults *r = ((CSDKResults*)obj);
                     
                     //If it's a Multipolygon type we need a polyline
@@ -354,10 +358,28 @@
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
 {
-    CSDKMapAnnotation *location = (CSDKMapAnnotation*)view.annotation;
+//    CSDKMapAnnotation *location = (CSDKMapAnnotation*)view.annotation;
+//    
+//    NSDictionary *launchOptions = @{MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving};
+//    [location.mapItem openInMapsWithLaunchOptions:launchOptions];
     
-    NSDictionary *launchOptions = @{MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving};
-    [location.mapItem openInMapsWithLaunchOptions:launchOptions];
+    DetailViewController *dvc = [[DetailViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    CSDKMapAnnotation *annotation =  (CSDKMapAnnotation*)view.annotation;
+    NSString *csdk_id = annotation.subtitle;
+    NSUInteger i = [_response.results indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+    if([((CSDKResults*)obj).cdkId isEqualToString:csdk_id])
+            {
+                *stop =YES;
+        return YES;
+            }
+        return NO;
+    }];
+    
+    if (i == NSNotFound) {
+        return;
+    }
+    dvc.layers =  [NSArray arrayWithObjects:[[[_response.results objectAtIndex:i] dictionaryRepresentation] objectForKey:@"layers"], nil];
+    [self.navigationController pushViewController:dvc animated:YES];
 }
 
 @end
