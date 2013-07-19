@@ -10,6 +10,7 @@
 #import "CSDKNodesRequest.h"
 #import "MapViewController.h"
 #import "ViewController.h"
+#import "SettingsViewController.h"
 
 @interface MenuViewController ()
 
@@ -33,7 +34,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setTitle:@"Choose a request for CitySDK"];
+    [self setTitle:@"Requests"];
     [self initObjects];
     [self initLocationObjects];
     
@@ -44,7 +45,16 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStylePlain target:self action:@selector(showSettings)];
+}
+
+- (void) showSettings
+{
+    SettingsViewController *svc = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController" bundle:nil];
+    UINavigationController *n = [[UINavigationController alloc] initWithRootViewController:svc];
+    [self presentViewController:n animated:YES completion:^{
+        
+    }];
 }
 
 - (void)initObjects
@@ -59,6 +69,12 @@
         r1.layerValue = @"museum";
         r1.per_page = 100;
         [_objects addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Museums in Amsterdam", @"title", r1, @"request", nil]];
+        
+        //Parks in Amsterdam
+        //http://api.citysdk.waag.org/admr.nl.amsterdam/nodes?osm::leisure=park&per_page=1000
+        [_objects addObject:
+         [NSDictionary dictionaryWithObjectsAndKeys:@"Parks in Amsterdam", @"title",
+          [CSDKNodesRequest requestWithAdmr:@"admr.nl.amsterdam" layerKey:@"osm::leisure" layerValue:@"park" perPage:1000], @"request", nil]];
         
         //open service requests in Helsinki
         //nodes?311.helsinki::status=open
@@ -87,6 +103,12 @@
         [_objects addObject:
          [NSDictionary dictionaryWithObjectsAndKeys:@"Railway stations in Zoetermeer", @"title",
           [CSDKNodesRequest requestWithAdmr:@"admr.nl.zoetermeer" layerKey:@"osm::railway" layerValue:@"station" perPage:1000], @"request", nil]];
+        
+        //All ArtsHolland data in Amsterdam
+        //http://api.citysdk.waag.org/admr.nl.amsterdam/nodes?layer=artsholland&per_page=1000
+        [_objects addObject:
+         [NSDictionary dictionaryWithObjectsAndKeys:@"ArtsHolland in Amsterdam", @"title",
+          [CSDKNodesRequest requestWithAdmr:@"admr.nl.amsterdam" layerKey:@"layer" layerValue:@"artsholland" perPage:1000], @"request", nil]];
         
     }
     
@@ -232,6 +254,7 @@ return nil;
         {
             MapViewController *detailViewController = [[MapViewController alloc] initWithNibName:@"MapViewController" bundle:nil];
             detailViewController.request = [[_objects objectAtIndex:indexPath.row] objectForKey:@"request"];
+            [detailViewController setTitle:@""];
             [self.navigationController pushViewController:detailViewController animated:YES];
         }
             break;

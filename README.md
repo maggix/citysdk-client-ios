@@ -12,6 +12,17 @@ query are different from those when querying the Museums).
 * Parsing of the results and displaying on a native map as overlays
 * Self-centering of the map
 * An example project that deals with querying
+* When selecting an annotation, the app will display in a TableView the info about the `data` of the object.
+
+
+How to build
+-------------
+* Clone the repository
+* Init and update the submodules with the command 
+	git submodule update --init --recursive
+
+That's it. Build and run.
+
 
 Upcoming features
 -------

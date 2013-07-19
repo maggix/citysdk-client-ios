@@ -12,6 +12,7 @@
 #import "CSDKHTTPClient.h"
 #import "CSDKMapAnnotation.h"
 #import "DetailViewController.h"
+#import "AppState.h"
 
 @interface MapViewController ()
 
@@ -110,6 +111,21 @@
                 [_response.results enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     CSDKResults *r = ((CSDKResults*)obj);
                     
+                    if([[AppState sharedInstance] setting_cleanup_data])
+                    {
+                        
+                        if([[r name] isEqualToString:@""])
+                        {
+                            return ;
+                        }
+                        if([[[[[r dictionaryRepresentation] objectForKey:@"layers"] objectForKey:@"osm" ] objectForKey:@"data"] objectForKey:@"way_area"]  )
+                        {
+                            double wayarea =[[[[[[r dictionaryRepresentation] objectForKey:@"layers"] objectForKey:@"osm" ] objectForKey:@"data"] objectForKey:@"way_area"] doubleValue];
+                            if(!(wayarea >0)){
+                                return;
+                            }
+                        }
+                    }
                     //If it's a Multipolygon type we need a polyline
                     if( [r.geom.type isEqualToString:@"MultiPolygon"])
                     {
