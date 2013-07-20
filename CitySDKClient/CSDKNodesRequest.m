@@ -114,7 +114,7 @@
 }
 
 
--(void)doAndProcessRequestWithParamsString:(NSString*)query
+-(void)executeAndProcessRequestWithQuery:(NSString*)query
 {
     NSString *path = [self baseUrlForRequest];
 
@@ -331,9 +331,9 @@
 
 }
 
-- (void)doAndProcessRequest
+- (void)executeAndProcessRequest
 {
-    [self doAndProcessRequestWithParamsString:nil];
+    [self executeAndProcessRequestWithQuery:nil];
     
     
 }
