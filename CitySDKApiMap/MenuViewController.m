@@ -252,10 +252,10 @@ return nil;
     switch (indexPath.section) {
         case 0:
         {
-            MapViewController *detailViewController = [[MapViewController alloc] initWithNibName:@"MapViewController" bundle:nil];
-            detailViewController.request = [[_objects objectAtIndex:indexPath.row] objectForKey:@"request"];
-            [detailViewController setTitle:@""];
-            [self.navigationController pushViewController:detailViewController animated:YES];
+            MapViewController *mapViewController = [[MapViewController alloc] initWithNibName:@"MapViewController" bundle:nil];
+            mapViewController.request = [[_objects objectAtIndex:indexPath.row] objectForKey:@"request"];
+            [mapViewController setTitle:@""];
+            [self.navigationController pushViewController:mapViewController animated:YES];
         }
             break;
         case 1:

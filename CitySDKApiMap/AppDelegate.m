@@ -12,6 +12,8 @@
 
 #import "MenuViewController.h"
 
+#import "AppState.h"
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -24,6 +26,8 @@
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
+    [[AppState sharedInstance] restore];
+    
     MenuViewController *m = [[MenuViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:m];
     self.window.rootViewController = navigationController;

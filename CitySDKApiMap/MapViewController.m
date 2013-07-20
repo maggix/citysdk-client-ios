@@ -83,6 +83,7 @@
     path = [path stringByAppendingString:[_request baseUrlForRequest]];
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    __weak MapViewController *weakSelf = self;
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         
         [[CSDKHTTPClient sharedClient] getPath:path parameters:[_request requestParamsForRequest] success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -276,9 +277,10 @@
                  }
                 }];
                 
-                
+
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [MBProgressHUD hideHUDForView:self.view animated:YES];
+
+                    [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
                 });
                 
                 //Update map
