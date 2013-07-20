@@ -42,10 +42,10 @@ typedef NS_ENUM(NSUInteger, CSDKLayerTypes)
 
 + (CSDKNodesRequest*)requestWithAdmr:(NSString*)admr layerKey:(NSString*)layerKey layerValue:(NSString*)layerValue name:(NSString*)name latitude:(double)latitude longitude:(double)longitude perPage:(int)perPage radius:(int)radius;
 
-
-
 - (NSDictionary*)requestParamsForRequest;
 
 - (NSString*)baseUrlForRequest;
+
+- (void)doAndProcessRequest;
 
 @end
