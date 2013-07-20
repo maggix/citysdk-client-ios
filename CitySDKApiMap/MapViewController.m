@@ -86,11 +86,11 @@
     path = [path stringByAppendingString:[_request baseUrlForRequest]];
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-
+    
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         
         [ _request doAndProcessRequest];
-
+        
     });
     
 }
@@ -190,7 +190,7 @@
     [self.navigationController pushViewController:dvc animated:YES];
 }
 
-#pragma mark - Notification manager
+#pragma mark - Notification handler
 
 -(void)handleLoadComplete:(NSNotification *) notification
 {

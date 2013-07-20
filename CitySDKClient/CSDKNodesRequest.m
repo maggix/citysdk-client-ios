@@ -114,12 +114,15 @@
 }
 
 
-- (void)doAndProcessRequest
+-(void)doAndProcessRequestWithParamsString:(NSString*)query
 {
-
     NSString *path = [self baseUrlForRequest];
-    
-    
+
+    if(query)
+    {
+        path = query;
+    }
+   
     [[CSDKHTTPClient sharedClient] getPath:path parameters:[self requestParamsForRequest] success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"operation: %@", [operation description]);
         NSLog(@"operation: %@", [[operation request] URL]);
@@ -130,22 +133,12 @@
         __block NSMutableArray *annotations = [[NSMutableArray alloc] init];
         __block NSMutableArray *result = [[NSMutableArray alloc] init];
         
-
+        
         
         //get JSON stuff
-        //            CSDKresponse *resp = [CSDKresponse modelObjectWithDictionary:r];
         CSDKresponse *response = [CSDKresponse modelObjectWithDictionary:r];
         if ([response.status isEqualToString:@"success"]) {
             NSLog(@"Success!");
-            
-            //                NSLog(@"Resp: %@", resp);
-            //                __block NSString *stringLayers = @"Layers: ";
-            //                [response.results enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            //                    stringLayers = [stringLayers stringByAppendingString:[((CSDKResults*)obj) layer]];
-            //                    stringLayers = [stringLayers stringByAppendingString:@" "];
-            //                }];
-            
-            
             
             //let's see each result from CitySDK
             [response.results enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -312,18 +305,16 @@
                 }
             }];
             
-            NSLog(@"allcoordinates %@", allCoordinates);
-            
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:result, @"result", allCoordinates, @"allCoordinates", annotations, @"annotations", nil];
-//using this I got the allCoordinates nil-ed
-//  @{@"result": result,
-//                                       @"allCoordinates,": allCoordinates,
-//                                       @"annotations": annotations,
-//                                       };
+            //using this I got the allCoordinates nil-ed
+            //  @{@"result": result,
+            //                                       @"allCoordinates,": allCoordinates,
+            //                                       @"annotations": annotations,
+            //                                       };
             
             NSNotification *resultNotification = [NSNotification notificationWithName:@"kNodesRequestComplete" object:self userInfo:userInfo];
             [[NSNotificationCenter defaultCenter] postNotification:resultNotification];
-
+            
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"error: %@",[error description] );
@@ -337,6 +328,12 @@
         
     }];
     
+
+}
+
+- (void)doAndProcessRequest
+{
+    [self doAndProcessRequestWithParamsString:nil];
     
     
 }

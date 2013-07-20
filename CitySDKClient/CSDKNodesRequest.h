@@ -46,6 +46,7 @@ typedef NS_ENUM(NSUInteger, CSDKLayerTypes)
 
 - (NSString*)baseUrlForRequest;
 
+-(void)doAndProcessRequestWithParamsString:(NSString*)query;
 - (void)doAndProcessRequest;
 
 @end
