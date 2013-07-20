@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <MapKit/MapKit.h>
+#import <MQMapKit/MQMapKit.h>
 #import <MBProgressHUD/MBProgressHUD.h>
 
 @class CSDKNodesRequest;
 
-@interface MapViewController : UIViewController <UIAlertViewDelegate, MKMapViewDelegate>
+@interface MapViewController : UIViewController <UIAlertViewDelegate, MQMapViewDelegate>
 
 @property (nonatomic, strong) CSDKNodesRequest *request;
 

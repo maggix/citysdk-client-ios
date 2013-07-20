@@ -7,15 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <MapKit/MapKit.h>
+#import <MQMapKit/MQMapKit.h>
 
-@interface CSDKMapAnnotation : NSObject <MKAnnotation>
+@interface CSDKMapAnnotation : NSObject <MQAnnotation>
 
-@property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSString *subtitle;
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *subtitle;
 @property (nonatomic, assign) CLLocationCoordinate2D coordinate;
 
-- (MKMapItem*)mapItem;
+//- (MQMapItem*)mapItem;
 - (id)initWithTitle:(NSString*)title subtitle:(NSString*)subtitle coordinate:(CLLocationCoordinate2D)coordinate;
 
 

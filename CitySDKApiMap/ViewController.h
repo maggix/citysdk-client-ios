@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <MapKit/MapKit.h>
+#import <MQMapKit/MQMapKit.h>
 #import <MBProgressHUD/MBProgressHUD.h>
 
-@interface ViewController : UIViewController <MKMapViewDelegate>
+@interface ViewController : UIViewController <MQMapViewDelegate>
 
 @end

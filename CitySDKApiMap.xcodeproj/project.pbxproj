@@ -14,6 +14,10 @@
 		AC1FD5CA17998F7600AABE5B /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC1FD5C817998F7600AABE5B /* SettingsViewController.m */; };
 		AC1FD5CB17998F7600AABE5B /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC1FD5C917998F7600AABE5B /* SettingsViewController.xib */; };
 		AC1FD5CE1799903100AABE5B /* AppState.m in Sources */ = {isa = PBXBuildFile; fileRef = AC1FD5CD1799903100AABE5B /* AppState.m */; };
+		AC1FD5DF179B1A6500AABE5B /* MQMapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC1FD5DE179B1A6500AABE5B /* MQMapKit.framework */; };
+		AC1FD5E1179B1E6400AABE5B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC1FD5E0179B1E6400AABE5B /* QuartzCore.framework */; };
+		AC1FD5E3179B204D00AABE5B /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC1FD5E2179B204D00AABE5B /* AddressBook.framework */; };
+		AC1FD5E5179B207900AABE5B /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AC1FD5E4179B207900AABE5B /* libxml2.dylib */; };
 		AC5D66521789CE10007BE768 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5D66501789CE10007BE768 /* MapViewController.m */; };
 		AC5D66531789CE10007BE768 /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC5D66511789CE10007BE768 /* MapViewController.xib */; };
 		AC5D665E178CB593007BE768 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC5D665D178CB593007BE768 /* Security.framework */; };
@@ -41,7 +45,6 @@
 		ACBC5917177EE08D00C9993B /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBC590C177EE08D00C9993B /* AFURLConnectionOperation.m */; };
 		ACBC5918177EE08D00C9993B /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBC590E177EE08D00C9993B /* AFXMLRequestOperation.m */; };
 		ACBC5919177EE08D00C9993B /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBC5910177EE08D00C9993B /* UIImageView+AFNetworking.m */; };
-		ACBC591B177EE17900C9993B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBC591A177EE17900C9993B /* MapKit.framework */; };
 		ACBC5924177EE4DA00C9993B /* libMBProgressHUD.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBC5921177EE3F000C9993B /* libMBProgressHUD.a */; };
 		ACBC5926177EE4F900C9993B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBC5925177EE4F900C9993B /* SystemConfiguration.framework */; };
 		ACBC5928177EE50600C9993B /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBC5927177EE50600C9993B /* MobileCoreServices.framework */; };
@@ -83,6 +86,10 @@
 		AC1FD5C917998F7600AABE5B /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
 		AC1FD5CC1799903100AABE5B /* AppState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppState.h; sourceTree = "<group>"; };
 		AC1FD5CD1799903100AABE5B /* AppState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppState.m; sourceTree = "<group>"; };
+		AC1FD5DE179B1A6500AABE5B /* MQMapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MQMapKit.framework; sourceTree = "<group>"; };
+		AC1FD5E0179B1E6400AABE5B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		AC1FD5E2179B204D00AABE5B /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		AC1FD5E4179B207900AABE5B /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		AC5D664F1789CE0F007BE768 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		AC5D66501789CE10007BE768 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		AC5D66511789CE10007BE768 /* MapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MapViewController.xib; sourceTree = "<group>"; };
@@ -130,7 +137,6 @@
 		ACBC590E177EE08D00C9993B /* AFXMLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFXMLRequestOperation.m; sourceTree = "<group>"; };
 		ACBC590F177EE08D00C9993B /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
 		ACBC5910177EE08D00C9993B /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
-		ACBC591A177EE17900C9993B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		ACBC591C177EE3F000C9993B /* MBProgressHUD.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MBProgressHUD.xcodeproj; path = MBProgressHUD/MBProgressHUD.xcodeproj; sourceTree = "<group>"; };
 		ACBC5925177EE4F900C9993B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		ACBC5927177EE50600C9993B /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -153,15 +159,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC1FD5E5179B207900AABE5B /* libxml2.dylib in Frameworks */,
+				AC1FD5E3179B204D00AABE5B /* AddressBook.framework in Frameworks */,
+				AC1FD5E1179B1E6400AABE5B /* QuartzCore.framework in Frameworks */,
 				AC5D665E178CB593007BE768 /* Security.framework in Frameworks */,
 				ACBC593E177F0F0100C9993B /* CoreLocation.framework in Frameworks */,
 				ACBC5924177EE4DA00C9993B /* libMBProgressHUD.a in Frameworks */,
 				ACBC5928177EE50600C9993B /* MobileCoreServices.framework in Frameworks */,
 				ACBC5926177EE4F900C9993B /* SystemConfiguration.framework in Frameworks */,
-				ACBC591B177EE17900C9993B /* MapKit.framework in Frameworks */,
 				ACBC58DB177EE06200C9993B /* UIKit.framework in Frameworks */,
 				ACBC58DD177EE06200C9993B /* Foundation.framework in Frameworks */,
 				ACBC58DF177EE06200C9993B /* CoreGraphics.framework in Frameworks */,
+				AC1FD5DF179B1A6500AABE5B /* MQMapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -227,11 +236,14 @@
 		ACBC58D9177EE06200C9993B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AC1FD5E4179B207900AABE5B /* libxml2.dylib */,
+				AC1FD5E2179B204D00AABE5B /* AddressBook.framework */,
+				AC1FD5E0179B1E6400AABE5B /* QuartzCore.framework */,
+				AC1FD5DE179B1A6500AABE5B /* MQMapKit.framework */,
 				AC5D665D178CB593007BE768 /* Security.framework */,
 				ACBC593D177F0F0100C9993B /* CoreLocation.framework */,
 				ACBC5927177EE50600C9993B /* MobileCoreServices.framework */,
 				ACBC5925177EE4F900C9993B /* SystemConfiguration.framework */,
-				ACBC591A177EE17900C9993B /* MapKit.framework */,
 				ACBC58DA177EE06200C9993B /* UIKit.framework */,
 				ACBC58DC177EE06200C9993B /* Foundation.framework */,
 				ACBC58DE177EE06200C9993B /* CoreGraphics.framework */,
@@ -559,10 +571,12 @@
 					"\"$(SRCROOT)/../citysdk-wp5-objc/Build/Products/Debug-iphoneos/CitySDK.embeddedframework\"",
 					"\"$(SRCROOT)/../citysdk-wp5-objc/Build/Products/Debug-iphonesimulator\"",
 					"\"$(SRCROOT)/../citysdk-wp5-objc/Build/Products/Debug-iphonesimulator/CitySDK.embeddedframework\"",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CitySDKApiMap/CitySDKApiMap-Prefix.pch";
 				INFOPLIST_FILE = "CitySDKApiMap/CitySDKApiMap-Info.plist";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -577,10 +591,12 @@
 					"\"$(SRCROOT)/../citysdk-wp5-objc/Build/Products/Debug-iphoneos/CitySDK.embeddedframework\"",
 					"\"$(SRCROOT)/../citysdk-wp5-objc/Build/Products/Debug-iphonesimulator\"",
 					"\"$(SRCROOT)/../citysdk-wp5-objc/Build/Products/Debug-iphonesimulator/CitySDK.embeddedframework\"",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CitySDKApiMap/CitySDKApiMap-Prefix.pch";
 				INFOPLIST_FILE = "CitySDKApiMap/CitySDKApiMap-Info.plist";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

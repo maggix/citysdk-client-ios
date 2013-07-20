@@ -16,7 +16,7 @@
 
 @interface MapViewController ()
 
-@property (nonatomic, weak) IBOutlet MKMapView *mapView;
+@property (nonatomic, weak) IBOutlet MQMapView *mapView;
 @property (nonatomic, strong) CSDKresponse *response;
 //@property (nonatomic, strong) CSDKResults *results;
 //@property (nonatomic, strong) NSMutableArray *allCoordinates;
@@ -57,13 +57,13 @@
 - (IBAction)mapTypeChange:(id)sender {
     switch (((UISegmentedControl*)sender).selectedSegmentIndex) {
         case 0:
-            self.mapView.mapType = MKMapTypeStandard;
+            self.mapView.mapType = MQMapTypeStandard;
             break;
         case 1:
-            self.mapView.mapType = MKMapTypeHybrid;
+            self.mapView.mapType = MQMapTypeHybrid;
             break;
         case 2:
-            self.mapView.mapType = MKMapTypeSatellite;
+            self.mapView.mapType = MQMapTypeSatellite;
             break;
         default:
             break;
@@ -95,7 +95,7 @@
     
 }
 
-- (MKCoordinateRegion)getCenterRegionFromPoints:(NSArray *)points
+- (MQCoordinateRegion)getCenterRegionFromPoints:(NSArray *)points
 {
     CLLocationCoordinate2D topLeftCoordinate;
     topLeftCoordinate.latitude = -90;
@@ -109,7 +109,7 @@
         bottomRightCoordinate.longitude = fmax(bottomRightCoordinate.longitude, location.coordinate.longitude);
         bottomRightCoordinate.latitude = fmin(bottomRightCoordinate.latitude, location.coordinate.latitude);
     }
-    MKCoordinateRegion region;
+    MQCoordinateRegion region;
     region.center.latitude = topLeftCoordinate.latitude - (topLeftCoordinate.latitude - bottomRightCoordinate.latitude) * 0.5;
     region.center.longitude = topLeftCoordinate.longitude + (bottomRightCoordinate.longitude - topLeftCoordinate.longitude) * 0.5;
     region.span.latitudeDelta = fabs(topLeftCoordinate.latitude - bottomRightCoordinate.latitude) * 1.2; //2
@@ -121,15 +121,17 @@
 #pragma mark -
 #pragma mark MKOverlayView Delegate
 
-- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay
+- (MQOverlayView *)mapView:(MQMapView *)mapView viewForOverlay:(id<MQOverlay>)overlay
 {
-    if([overlay isKindOfClass:[MKPolyline class]])
+    if([overlay isKindOfClass:[MQPolyline class]])
     {
-        MKPolylineView *lineView = [[MKPolylineView alloc] initWithPolyline:overlay];
+        MQPolylineView *lineView = [[MQPolylineView alloc] initWithPolyline:overlay];
         lineView.lineWidth = 5;
         lineView.strokeColor = [UIColor redColor];
         //Todo: fill with a semi-transparent color
         lineView.fillColor = [UIColor redColor];
+
+//http://developer.apple.com/library/ios/#documentation/MapKit/Reference/MKOverlayPathView_class/Reference/Reference.html#//apple_ref/occ/cl/MKOverlayPathView
         return lineView;
     }
     return nil;
@@ -142,15 +144,15 @@
 //- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
 //}
 
-- (MKPinAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
+- (MQPinAnnotationView *)mapView:(MQMapView *)mapView viewForAnnotation:(id <MQAnnotation>)annotation {
     static NSString *identifier = @"CSDKAnnotation";
     if ([annotation isKindOfClass:[CSDKMapAnnotation class]]) {
         
-        MKPinAnnotationView *annotationView = (MKPinAnnotationView *) [_mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
+        MQPinAnnotationView *annotationView = (MQPinAnnotationView *) [_mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
         if (annotationView == nil) {
-            annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
+            annotationView = [[MQPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
             annotationView.enabled = YES;
-            annotationView.pinColor = MKPinAnnotationColorRed;
+            annotationView.pinColor = MQPinAnnotationColorRed;
             annotationView.canShowCallout = YES;
             annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
 //            annotationView.image = [UIImage imageNamed:@"something"];//here we use a nice image instead of the default pins
@@ -164,7 +166,7 @@
     return nil;
 }
 
-- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
+- (void)mapView:(MQMapView *)mapView annotationView:(MQAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
 {
 //    CSDKMapAnnotation *location = (CSDKMapAnnotation*)view.annotation;
 //    
@@ -174,6 +176,7 @@
     DetailViewController *dvc = [[DetailViewController alloc] initWithStyle:UITableViewStyleGrouped];
     CSDKMapAnnotation *annotation =  (CSDKMapAnnotation*)view.annotation;
     NSString *csdk_id = annotation.subtitle;
+    dvc.title = annotation.subtitle;
     NSUInteger i = [_response.results indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
     if([((CSDKResults*)obj).cdkId isEqualToString:csdk_id])
             {
@@ -195,13 +198,12 @@
 -(void)handleLoadComplete:(NSNotification *) notification
 {
     
-    __weak MapViewController *weakSelf = self;
+//    __weak MapViewController *weakSelf = self;
     
     NSDictionary *userDict = [notification userInfo];
     if(![userDict objectForKey:@"error"])
     {
-        
-        NSLog(@"allcoordinates %@", [userDict objectForKey:@"allCoordinates"]);
+        _response = [userDict objectForKey:@"response"];
         [_mapView addAnnotations:[userDict objectForKey:@"annotations"]];
         [_mapView addOverlays:[userDict objectForKey:@"result"]];
         [_mapView setRegion:[self getCenterRegionFromPoints:[userDict objectForKey:@"allCoordinates"]] animated:YES];
@@ -214,8 +216,9 @@
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
-        });
+//            [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+    });
 }
 
 @end

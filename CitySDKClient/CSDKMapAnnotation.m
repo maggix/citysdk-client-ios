@@ -21,17 +21,17 @@
     return self;
 }
 
-- (MKMapItem*)mapItem
-{
-    MKPlacemark *placemark = [[MKPlacemark alloc]
-                              initWithCoordinate:(self.coordinate)
-                              addressDictionary:nil];
-    
-    MKMapItem *mapItem = [[MKMapItem alloc] initWithPlacemark:placemark];
-    mapItem.name = self.title;
-    
-    return mapItem;
-}
+//- (MKMapItem*)mapItem
+//{
+//    MKPlacemark *placemark = [[MKPlacemark alloc]
+//                              initWithCoordinate:(self.coordinate)
+//                              addressDictionary:nil];
+//    
+//    MKMapItem *mapItem = [[MKMapItem alloc] initWithPlacemark:placemark];
+//    mapItem.name = self.title;
+//    
+//    return mapItem;
+//}
 
 
 @end

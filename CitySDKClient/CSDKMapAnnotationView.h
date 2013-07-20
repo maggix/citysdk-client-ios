@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Giovanni Maggini. All rights reserved.
 //
 
-#import <MapKit/MapKit.h>
+#import <MQMapKit/MQMapKit.h>
 #import "CSDKMapAnnotation.h"
 
-@interface CSDKMapAnnotationView : MKAnnotationView
+@interface CSDKMapAnnotationView : MQAnnotationView
 
 @end

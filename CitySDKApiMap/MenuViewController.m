@@ -254,7 +254,7 @@ return nil;
         {
             MapViewController *mapViewController = [[MapViewController alloc] initWithNibName:@"MapViewController" bundle:nil];
             mapViewController.request = [[_objects objectAtIndex:indexPath.row] objectForKey:@"request"];
-            [mapViewController setTitle:@""];
+            [mapViewController setTitle:[[_objects objectAtIndex:indexPath.row] objectForKey:@"title"]];
             [self.navigationController pushViewController:mapViewController animated:YES];
         }
             break;

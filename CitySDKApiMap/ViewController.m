@@ -15,7 +15,7 @@
 @property (nonatomic, weak) IBOutlet UITextField *admrTextField;
 @property (nonatomic, weak) IBOutlet UITextField *nodesTextField;
 @property (nonatomic, weak) IBOutlet UIButton *goButton;
-@property (nonatomic, weak) IBOutlet MKMapView *mapView;
+@property (nonatomic, weak) IBOutlet MQMapView *mapView;
 @property (nonatomic, weak) IBOutlet UILabel *resultsLabel;
 @property (nonatomic, weak) IBOutlet UILabel *layersLabel;
 
@@ -125,7 +125,7 @@
                                     caIndex++;
                                 }
                                 
-                                MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:coordCount];
+                                MQPolyline *pl = [MQPolyline polylineWithCoordinates:coordinateArray count:coordCount];
                                 [result addObject:pl];
                                 free(coordinateArray);
                                 
@@ -139,7 +139,7 @@
                         double lat = [[[r.geom.coordinates objectAtIndex:1] stringValue] doubleValue];
                         CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * 1);
                         coordinateArray[0] = CLLocationCoordinate2DMake(lat, lon);
-                        MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:1];
+                        MQPolyline *pl = [MQPolyline polylineWithCoordinates:coordinateArray count:1];
                         [result addObject:pl];
                         [_allCoordinates addObject:[[CLLocation alloc] initWithLatitude:lat longitude:lon]];
                         free(coordinateArray);
@@ -162,7 +162,7 @@
                                 caIndex++;
                             }
                             
-                            MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:coordCount];
+                            MQPolyline *pl = [MQPolyline polylineWithCoordinates:coordinateArray count:coordCount];
                             [result addObject:pl];
                             free(coordinateArray);
                         }
@@ -186,7 +186,7 @@
                                 caIndex++;
                             }
                             
-                            MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:coordCount];
+                            MQPolyline *pl = [MQPolyline polylineWithCoordinates:coordinateArray count:coordCount];
                             [result addObject:pl];
                             free(coordinateArray);
                         }
@@ -206,7 +206,7 @@
                             [_allCoordinates addObject:[[CLLocation alloc] initWithLatitude:lat longitude:lon]];
                             caIndex++;
                         }
-                        MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:coordCount];
+                        MQPolyline *pl = [MQPolyline polylineWithCoordinates:coordinateArray count:coordCount];
                         [result addObject:pl];
                         free(coordinateArray);
                     }
@@ -244,7 +244,7 @@
 }
 
 
-- (MKCoordinateRegion)getCenterRegionFromPoints:(NSArray *)points
+- (MQCoordinateRegion)getCenterRegionFromPoints:(NSArray *)points
 {
     CLLocationCoordinate2D topLeftCoordinate;
     topLeftCoordinate.latitude = -90;
@@ -258,7 +258,7 @@
         bottomRightCoordinate.longitude = fmax(bottomRightCoordinate.longitude, location.coordinate.longitude);
         bottomRightCoordinate.latitude = fmin(bottomRightCoordinate.latitude, location.coordinate.latitude);
     }
-    MKCoordinateRegion region;
+    MQCoordinateRegion region;
     region.center.latitude = topLeftCoordinate.latitude - (topLeftCoordinate.latitude - bottomRightCoordinate.latitude) * 0.5;
     region.center.longitude = topLeftCoordinate.longitude + (bottomRightCoordinate.longitude - topLeftCoordinate.longitude) * 0.5;
     region.span.latitudeDelta = fabs(topLeftCoordinate.latitude - bottomRightCoordinate.latitude) * 1.2; //2
@@ -277,11 +277,11 @@
 #pragma mark - 
 #pragma mark MKOverlayView Delegate
 
-- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay
+- (MQOverlayView *)mapView:(MQMapView *)mapView viewForOverlay:(id<MQOverlay>)overlay
 {
-    if([overlay isKindOfClass:[MKPolyline class]])
+    if([overlay isKindOfClass:[MQPolyline class]])
     {
-        MKPolylineView *lineView = [[MKPolylineView alloc] initWithPolyline:overlay];
+        MQPolylineView *lineView = [[MQPolylineView alloc] initWithPolyline:overlay];
         lineView.lineWidth = 5;
         lineView.strokeColor = [UIColor redColor];
         lineView.fillColor = [UIColor redColor];

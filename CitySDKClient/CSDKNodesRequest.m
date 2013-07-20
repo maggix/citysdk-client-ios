@@ -11,7 +11,7 @@
 #import "DataModels.h"
 #import <CoreLocation/CoreLocation.h>
 #import "AppState.h"
-#import <MapKit/MapKit.h>
+#import <MQMapKit/MQMapKit.h>
 #import "CSDKMapAnnotation.h"
 
 @implementation CSDKNodesRequest
@@ -189,7 +189,7 @@
                                 caIndex++;
                             }
                             
-                            MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:coordCount];
+                            MQPolyline *pl = [MQPolyline polylineWithCoordinates:coordinateArray count:coordCount];
                             [result addObject:pl];
                             free(coordinateArray);
                             
@@ -208,7 +208,7 @@
                     double lat = [[[r.geom.coordinates objectAtIndex:1] stringValue] doubleValue];
                     CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * 1);
                     coordinateArray[0] = CLLocationCoordinate2DMake(lat, lon);
-                    MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:1];
+                    MQPolyline *pl = [MQPolyline polylineWithCoordinates:coordinateArray count:1];
                     [result addObject:pl];
                     [allCoordinates addObject:[[CLLocation alloc] initWithLatitude:lat longitude:lon]];
                     free(coordinateArray);
@@ -238,7 +238,7 @@
                             caIndex++;
                         }
                         
-                        MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:coordCount];
+                        MQPolyline *pl = [MQPolyline polylineWithCoordinates:coordinateArray count:coordCount];
                         [result addObject:pl];
                         free(coordinateArray);
                     }
@@ -270,7 +270,7 @@
                             caIndex++;
                         }
                         
-                        MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:coordCount];
+                        MQPolyline *pl = [MQPolyline polylineWithCoordinates:coordinateArray count:coordCount];
                         [result addObject:pl];
                         free(coordinateArray);
                     }
@@ -295,7 +295,7 @@
                         [allCoordinates addObject:[[CLLocation alloc] initWithLatitude:lat longitude:lon]];
                         caIndex++;
                     }
-                    MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:coordCount];
+                    MQPolyline *pl = [MQPolyline polylineWithCoordinates:coordinateArray count:coordCount];
                     [result addObject:pl];
                     free(coordinateArray);
                     
@@ -311,10 +311,8 @@
                     //TODO: still have to deal with it
                 }
             }];
-            
-            NSLog(@"allcoordinates %@", allCoordinates);
-            
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:result, @"result", allCoordinates, @"allCoordinates", annotations, @"annotations", nil];
+                        
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:response, @"response",  result, @"result", allCoordinates, @"allCoordinates", annotations, @"annotations", nil];
 //using this I got the allCoordinates nil-ed
 //  @{@"result": result,
 //                                       @"allCoordinates,": allCoordinates,
