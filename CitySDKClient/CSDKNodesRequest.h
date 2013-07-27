@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+
+extern NSString* const NodesRequestNotificationName;
+
 static NSArray *CSDKLayersKeys;
 
 //Some requests have "layer=..." others have "osm::tourism"
@@ -26,6 +29,7 @@ typedef NS_ENUM(NSUInteger, CSDKLayerTypes)
 
 @interface CSDKNodesRequest : NSObject
 
+//To request parameters
 @property (nonatomic, strong) NSString *admr;
 @property (nonatomic, strong) NSString *layerKey;
 @property (nonatomic, strong) NSString *layerValue;
@@ -34,7 +38,9 @@ typedef NS_ENUM(NSUInteger, CSDKLayerTypes)
 @property (nonatomic, assign) double longitude;
 @property (nonatomic, assign) int per_page;
 @property (nonatomic, assign) int radius;
-//@property (nonatomic, strong) NSString *geom;
+
+//For processing the request
+@property (nonatomic, strong) NSArray *geomTypesFilter;
 
 + (CSDKNodesRequest*)requestWithAdmr:(NSString*)admr layerKey:(NSString*)layerKey layerValue:(NSString*)layerValue latitude:(double)latitude longitude:(double)longitude perPage:(int)perPage radius:(int)radius;
 

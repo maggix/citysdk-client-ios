@@ -14,6 +14,8 @@
 #import <MapKit/MapKit.h>
 #import "CSDKMapAnnotation.h"
 
+NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
+
 @implementation CSDKNodesRequest
 
 - (id)init
@@ -160,7 +162,7 @@
                     }
                 }
                 //If it's a Multipolygon type we need a polyline
-                if( [r.geom.type isEqualToString:@"MultiPolygon"])
+                if( [r.geom.type isEqualToString:@"MultiPolygon"] && [_geomTypesFilter containsObject:@"MultiPolygon"])
                 {
                     //each one is a set of coordinates. For example the admr.nl.amsterdam is made of 3 different groups
                     for(NSArray *coordGrp in r.geom.coordinates){
@@ -195,7 +197,7 @@
                     [annotations addObject:annotation];
                     free(c);
                 }
-                if ([r.geom.type isEqualToString:@"Point"]) {
+                if ([r.geom.type isEqualToString:@"Point"] && [_geomTypesFilter containsObject:@"Point"]) {
                     //point
                     double lon = [[[r.geom.coordinates objectAtIndex:0] stringValue] doubleValue];
                     double lat = [[[r.geom.coordinates objectAtIndex:1] stringValue] doubleValue];
@@ -214,7 +216,7 @@
                     [annotations addObject:annotation];
                 }
                 
-                if ([r.geom.type isEqualToString:@"Polygon"]) {
+                if ([r.geom.type isEqualToString:@"Polygon"] && [_geomTypesFilter containsObject:@"Polygon"]) {
                     //each one is a set of coordinates.
                     for(NSArray *coordGrp in r.geom.coordinates){
                         int caIndex = 0;
@@ -245,7 +247,7 @@
                     
                 }
                 
-                if ([r.geom.type isEqualToString:@"MultiLineString"]) {
+                if ([r.geom.type isEqualToString:@"MultiLineString"] && [_geomTypesFilter containsObject:@"MultiLineString"]) {
                     //each one is a set of coordinate that define a line (not a polygon)
                     //it parses just as Polygon does
                     for(NSArray *coordGrp in r.geom.coordinates){
@@ -274,7 +276,7 @@
                     [annotations addObject:annotation];
                     free(c);
                 }
-                if ([r.geom.type isEqualToString:@"LineString"]) {
+                if ([r.geom.type isEqualToString:@"LineString"] && [_geomTypesFilter containsObject:@"LineString"]) {
                     //r.geom.coordinates is just an array of coordinates, so I iterate only 1 time
                     int caIndex = 0;
                     NSInteger coordCount = [r.geom.coordinates count];
@@ -299,7 +301,7 @@
                     [annotations addObject:annotation];
                     free(c);
                 }
-                if ([r.geom.type isEqualToString:@"GeometryCollection"]) {
+                if ([r.geom.type isEqualToString:@"GeometryCollection"] && [_geomTypesFilter containsObject:@"GeometryCollection"]) {
                     //This is a container for different types of geometries (can contain points, LineString, MultiLineString, Polygon, etc.
                     //TODO: still have to deal with it
                 }
@@ -312,7 +314,7 @@
             //                                       @"annotations": annotations,
             //                                       };
             
-            NSNotification *resultNotification = [NSNotification notificationWithName:@"kNodesRequestComplete" object:self userInfo:userInfo];
+            NSNotification *resultNotification = [NSNotification notificationWithName:NodesRequestNotificationName object:self userInfo:userInfo];
             [[NSNotificationCenter defaultCenter] postNotification:resultNotification];
             
         }
@@ -323,7 +325,7 @@
                                    @"resultError": error
                                    };
         
-        NSNotification *resultNotification = [NSNotification notificationWithName:@"kNodesRequestComplete" object:self userInfo:userInfo];
+        NSNotification *resultNotification = [NSNotification notificationWithName:NodesRequestNotificationName object:self userInfo:userInfo];
         [[NSNotificationCenter defaultCenter] postNotification:resultNotification];
         
     }];
@@ -334,8 +336,7 @@
 - (void)executeAndProcessRequest
 {
     [self executeAndProcessRequestWithQuery:nil];
-    
-    
+
 }
 
 

@@ -33,7 +33,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLoadComplete:) name:@"kNodesRequestComplete" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLoadComplete:) name:NodesRequestNotificationName object:nil];
     
     [_mapView setDelegate:self];
 }

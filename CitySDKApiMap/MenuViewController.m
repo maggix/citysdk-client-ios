@@ -62,13 +62,20 @@
     if(_objects == nil)
     {
         _objects = [[NSMutableArray alloc] init];
+
         //museums in Amsterdam
-        CSDKNodesRequest *r1 = [[CSDKNodesRequest alloc] init];
-        r1.admr = @"admr.nl.amsterdam";
-        r1.layerKey = @"osm::tourism";
-        r1.layerValue = @"museum";
-        r1.per_page = 100;
-        [_objects addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Museums in Amsterdam", @"title", r1, @"request", nil]];
+        [_objects addObject:
+        [NSDictionary dictionaryWithObjectsAndKeys:@"Museums in Amsterdam", @"title",
+         [CSDKNodesRequest requestWithAdmr:@"admr.nl.amsterdam" layerKey:@"osm::tourism" layerValue:@"museum" perPage:1000], @"request", nil]];
+
+        //museums in Amsterdam (only of type Points)
+        NSArray *filter = @[@"Point"];
+        CSDKNodesRequest *r = [CSDKNodesRequest requestWithAdmr:@"admr.nl.amsterdam" layerKey:@"osm::tourism" layerValue:@"museum" perPage:1000];
+        r.geomTypesFilter = filter;
+        [_objects addObject:
+         [NSDictionary dictionaryWithObjectsAndKeys:@"Museums in Amsterdam (Points only)", @"title",
+          r, @"request", nil]];
+
         
         //Parks in Amsterdam
         //http://api.citysdk.waag.org/admr.nl.amsterdam/nodes?osm::leisure=park&per_page=1000
@@ -118,7 +125,8 @@
 {
     if(_locationObjects == nil){
         _locationObjects = [[NSMutableArray alloc] init];
-        //museums in Amsterdam
+        
+        //museums 1KM from here
         CSDKNodesRequest *r1 = [[CSDKNodesRequest alloc] init];
         r1.admr = nil;
         r1.layerKey = @"osm::tourism";
@@ -128,6 +136,9 @@
         r1.longitude = _location.coordinate.longitude;
         r1.radius = 1000;
         [_locationObjects addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Museums within 1Km from here", @"title", r1, @"request", nil]];
+        
+        //in what ADMR am I now?
+        
     }
 }
 

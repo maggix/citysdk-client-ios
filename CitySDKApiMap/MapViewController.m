@@ -204,7 +204,9 @@
         NSLog(@"allcoordinates %@", [userDict objectForKey:@"allCoordinates"]);
         [_mapView addAnnotations:[userDict objectForKey:@"annotations"]];
         [_mapView addOverlays:[userDict objectForKey:@"result"]];
-        [_mapView setRegion:[self getCenterRegionFromPoints:[userDict objectForKey:@"allCoordinates"]] animated:YES];
+        if ([[userDict objectForKey:@"allCoordinates"] count] > 0) {
+            [_mapView setRegion:[self getCenterRegionFromPoints:[userDict objectForKey:@"allCoordinates"]] animated:YES];
+        }
 
     }
     else{
