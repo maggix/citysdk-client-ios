@@ -146,7 +146,7 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
             [response.results enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 CSDKResults *r = ((CSDKResults*)obj);
                 
-                if([[AppState sharedInstance] setting_cleanup_data])
+                if(self.cleanup_data)
                 {
                     
                     if([[r name] isEqualToString:@""])

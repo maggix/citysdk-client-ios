@@ -81,6 +81,12 @@
 //    _allCoordinates = [[NSMutableArray alloc] init];
 //    _mapAnnotations = [[NSMutableArray alloc] init];
     
+    
+    if([[AppState sharedInstance] setting_cleanup_data])
+    {
+        _request.cleanup_data = YES;
+    }
+    
     //build the path for the request
     NSString *path = @"";
     path = [path stringByAppendingString:[_request baseUrlForRequest]];
