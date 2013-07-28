@@ -126,8 +126,6 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
     }
    
     [[CSDKHTTPClient sharedClient] getPath:path parameters:[self requestParamsForRequest] success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"operation: %@", [operation description]);
-        NSLog(@"operation: %@", [[operation request] URL]);
         __autoreleasing NSError* dataError = nil;
         NSDictionary *r = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:&dataError];
         
@@ -141,7 +139,6 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
         //get JSON stuff
         CSDKresponse *response = [CSDKresponse modelObjectWithDictionary:r];
         if ([response.status isEqualToString:@"success"]) {
-            NSLog(@"Success!");
             
             //let's see each result from CitySDK
             [response.results enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -323,7 +320,6 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
             
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"error: %@",[error description] );
         
         NSDictionary *userInfo = @{
                                    @"resultError": error
