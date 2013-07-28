@@ -311,7 +311,7 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
                 }
             }];
             
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:polylines, @"result", allCoordinates, @"allCoordinates", annotations, @"annotations", nil];
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:polylines, @"result", allCoordinates, @"allCoordinates", annotations, @"annotations", results, @"CSDKResults", nil];
             //using this I got the allCoordinates nil-ed
             //  @{@"result": result,
             //                                       @"allCoordinates,": allCoordinates,
