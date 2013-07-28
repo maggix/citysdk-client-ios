@@ -133,7 +133,8 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
         
         __block NSMutableArray *allCoordinates = [[NSMutableArray alloc] init];
         __block NSMutableArray *annotations = [[NSMutableArray alloc] init];
-        __block NSMutableArray *result = [[NSMutableArray alloc] init];
+        __block NSMutableArray *polylines = [[NSMutableArray alloc] init];
+        __block NSMutableArray *results = [[NSMutableArray alloc] init];
         
         
         
@@ -185,14 +186,14 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
                             }
                             
                             MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:coordCount];
-                            [result addObject:pl];
+                            [polylines addObject:pl];
                             free(coordinateArray);
-                            
                         }
+                        [results addObject:r];
                     }
                     //Annotation in the first coordinate of the Polyline
                     CLLocationCoordinate2D *c = malloc(sizeof(CLLocationCoordinate2D));
-                    [[result lastObject] getCoordinates:c range:NSMakeRange(0, 1)];
+                    [[polylines lastObject] getCoordinates:c range:NSMakeRange(0, 1)];
                     CSDKMapAnnotation *annotation = [[CSDKMapAnnotation alloc] initWithTitle:r.name subtitle:r.cdkId coordinate:CLLocationCoordinate2DMake(c->latitude, c->longitude)];
                     [annotations addObject:annotation];
                     free(c);
@@ -204,7 +205,7 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
                     CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * 1);
                     coordinateArray[0] = CLLocationCoordinate2DMake(lat, lon);
                     MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:1];
-                    [result addObject:pl];
+                    [polylines addObject:pl];
                     [allCoordinates addObject:[[CLLocation alloc] initWithLatitude:lat longitude:lon]];
                     free(coordinateArray);
                     
@@ -214,6 +215,7 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
                     c.longitude = lon;
                     CSDKMapAnnotation *annotation = [[CSDKMapAnnotation alloc] initWithTitle:r.name subtitle:r.cdkId coordinate:c];
                     [annotations addObject:annotation];
+                    [results addObject:r];
                 }
                 
                 if ([r.geom.type isEqualToString:@"Polygon"] && [_geomTypesFilter containsObject:@"Polygon"]) {
@@ -234,17 +236,17 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
                         }
                         
                         MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:coordCount];
-                        [result addObject:pl];
+                        [polylines addObject:pl];
                         free(coordinateArray);
                     }
                     
                     //Annotation in the first coordinate of the Polyline
                     CLLocationCoordinate2D *c = malloc(sizeof(CLLocationCoordinate2D));
-                    [[result lastObject] getCoordinates:c range:NSMakeRange(0, 1)];
+                    [[polylines lastObject] getCoordinates:c range:NSMakeRange(0, 1)];
                     CSDKMapAnnotation *annotation = [[CSDKMapAnnotation alloc] initWithTitle:r.name subtitle:r.cdkId coordinate:CLLocationCoordinate2DMake(c->latitude, c->longitude)];
                     [annotations addObject:annotation];
                     free(c);
-                    
+                    [results addObject:r];
                 }
                 
                 if ([r.geom.type isEqualToString:@"MultiLineString"] && [_geomTypesFilter containsObject:@"MultiLineString"]) {
@@ -266,15 +268,16 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
                         }
                         
                         MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:coordCount];
-                        [result addObject:pl];
+                        [polylines addObject:pl];
                         free(coordinateArray);
                     }
                     //Annotation in the first coordinate of the Polyline
                     CLLocationCoordinate2D *c = malloc(sizeof(CLLocationCoordinate2D));
-                    [[result lastObject] getCoordinates:c range:NSMakeRange(0, 1)];
+                    [[polylines lastObject] getCoordinates:c range:NSMakeRange(0, 1)];
                     CSDKMapAnnotation *annotation = [[CSDKMapAnnotation alloc] initWithTitle:r.name subtitle:r.cdkId coordinate:CLLocationCoordinate2DMake(c->latitude, c->longitude)];
                     [annotations addObject:annotation];
                     free(c);
+                    [results addObject:r];
                 }
                 if ([r.geom.type isEqualToString:@"LineString"] && [_geomTypesFilter containsObject:@"LineString"]) {
                     //r.geom.coordinates is just an array of coordinates, so I iterate only 1 time
@@ -291,15 +294,16 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
                         caIndex++;
                     }
                     MKPolyline *pl = [MKPolyline polylineWithCoordinates:coordinateArray count:coordCount];
-                    [result addObject:pl];
+                    [polylines addObject:pl];
                     free(coordinateArray);
                     
                     //Annotation in the first coordinate of the Polyline
                     CLLocationCoordinate2D *c = malloc(sizeof(CLLocationCoordinate2D));
-                    [[result lastObject] getCoordinates:c range:NSMakeRange(0, 1)];
+                    [[polylines lastObject] getCoordinates:c range:NSMakeRange(0, 1)];
                     CSDKMapAnnotation *annotation = [[CSDKMapAnnotation alloc] initWithTitle:r.name subtitle:r.cdkId coordinate:CLLocationCoordinate2DMake(c->latitude, c->longitude)];
                     [annotations addObject:annotation];
                     free(c);
+                    [results addObject:r];
                 }
                 if ([r.geom.type isEqualToString:@"GeometryCollection"] && [_geomTypesFilter containsObject:@"GeometryCollection"]) {
                     //This is a container for different types of geometries (can contain points, LineString, MultiLineString, Polygon, etc.
@@ -307,7 +311,7 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
                 }
             }];
             
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:result, @"result", allCoordinates, @"allCoordinates", annotations, @"annotations", nil];
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:polylines, @"result", allCoordinates, @"allCoordinates", annotations, @"annotations", nil];
             //using this I got the allCoordinates nil-ed
             //  @{@"result": result,
             //                                       @"allCoordinates,": allCoordinates,
