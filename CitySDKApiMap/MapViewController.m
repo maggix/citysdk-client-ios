@@ -8,6 +8,7 @@
 
 #import "MapViewController.h"
 #import "CSDKNodesRequest.h"
+#import "CSDKAdmrRequest.h"
 #import "DataModels.h"
 #import "CSDKHTTPClient.h"
 #import "CSDKMapAnnotation.h"
@@ -42,7 +43,8 @@
     [_mapView setDelegate:self];
     [_mapView setShowsUserLocation:YES];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLoadComplete:) name:@"kNodesRequestComplete" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLoadComplete:) name:NodesRequestNotificationName object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLoadComplete:) name:AdmrRequestNotificationName object:nil];
     
     [self loadResults];
 

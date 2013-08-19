@@ -8,6 +8,20 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString* const AdmrRequestNotificationName;
+
 @interface CSDKAdmrRequest : NSObject
+
+@property (nonatomic, strong) NSString *admr;
+@property (nonatomic, assign) int per_page;
+
+- (NSDictionary*)requestParamsForRequest;
+
+- (NSString*)baseUrlForRequest;
+
++ (CSDKAdmrRequest*)requestWithAdmr:(NSString*)admr perPage:(int)perPage;
+
+-(void)executeAndProcessRequestWithQuery:(NSString*)query;
+- (void)executeAndProcessRequest;
 
 @end

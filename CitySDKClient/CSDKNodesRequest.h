@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-
 extern NSString* const NodesRequestNotificationName;
 
 static NSArray *CSDKLayersKeys;

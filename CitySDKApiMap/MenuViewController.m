@@ -8,6 +8,7 @@
 
 #import "MenuViewController.h"
 #import "CSDKNodesRequest.h"
+#import "CSDKAdmrRequest.h"
 #import "MapViewController.h"
 #import "ViewController.h"
 #import "SettingsViewController.h"
@@ -67,6 +68,11 @@
         [_objects addObject:
         [NSDictionary dictionaryWithObjectsAndKeys:@"Museums in Amsterdam", @"title",
          [CSDKNodesRequest requestWithAdmr:@"admr.nl.amsterdam" layerKey:@"osm::tourism" layerValue:@"museum" perPage:1000], @"request", nil]];
+        
+        //all borders
+        [_objects addObject:
+         [NSDictionary dictionaryWithObjectsAndKeys:@"Border of Amsterdam", @"title",
+          [CSDKAdmrRequest requestWithAdmr:@"admr.nl.amsterdam" perPage:1000], @"request", nil]];
 
         //museums in Amsterdam (only of type Points)
         NSArray *filter = @[@"Point"];
