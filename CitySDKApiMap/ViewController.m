@@ -11,6 +11,7 @@
 #import "CSDKHTTPClient.h"
 #import "CSDKNodesRequest.h"
 
+
 @interface ViewController ()
 
 @property (nonatomic, weak) IBOutlet UITextField *admrTextField;
@@ -32,9 +33,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLoadComplete:) name:NodesRequestNotificationName object:nil];
-    
+   
     [_mapView setDelegate:self];
 }
 
@@ -47,6 +46,9 @@
 
 - (IBAction)goButtonPressed:(id)sender
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLoadComplete:) name:NodesRequestNotificationName object:nil];
+
+    
     [_admrTextField endEditing:YES];
     [_nodesTextField endEditing:YES];
     
@@ -80,11 +82,9 @@
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
-    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        
-        [ _request executeAndProcessRequestWithQuery:path];
-        
-    });
+   
+    [ _request executeAndProcessRequestWithQuery:path];
+
 }
 
 
@@ -138,6 +138,7 @@
 
 -(void)handleLoadComplete:(NSNotification *) notification
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NodesRequestNotificationName object:nil];
     
     __weak ViewController *weakSelf = self;
     
@@ -148,7 +149,9 @@
         NSLog(@"allcoordinates %@", [userDict objectForKey:@"allCoordinates"]);
         [_mapView addAnnotations:[userDict objectForKey:@"annotations"]];
         [_mapView addOverlays:[userDict objectForKey:@"result"]];
-        [_mapView setRegion:[self getCenterRegionFromPoints:[userDict objectForKey:@"allCoordinates"]] animated:YES];
+        if ([[userDict objectForKey:@"allCoordinates"] count] > 0) {
+            [_mapView setRegion:[self getCenterRegionFromPoints:[userDict objectForKey:@"allCoordinates"]] animated:YES];
+        }
         
     }
     else{
