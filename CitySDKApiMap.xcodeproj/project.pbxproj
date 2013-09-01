@@ -221,10 +221,9 @@
 		ACBC58CE177EE06200C9993B = {
 			isa = PBXGroup;
 			children = (
-				ACBC591C177EE3F000C9993B /* MBProgressHUD.xcodeproj */,
+				ACFC839B17D3F8BB00FB252E /* Third Party Libraries */,
 				AC0DE4161782D2B4005733E1 /* CitySDKClient */,
 				ACBC5929177EE59600C9993B /* API */,
-				ACBC58FD177EE08D00C9993B /* AFNetworking */,
 				ACBC58E0177EE06200C9993B /* CitySDKApiMap */,
 				ACBC58D9177EE06200C9993B /* Frameworks */,
 				ACBC58D8177EE06200C9993B /* Products */,
@@ -343,6 +342,15 @@
 				ACBC5936177EE59600C9993B /* DataModels.h */,
 			);
 			path = API;
+			sourceTree = "<group>";
+		};
+		ACFC839B17D3F8BB00FB252E /* Third Party Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				ACBC591C177EE3F000C9993B /* MBProgressHUD.xcodeproj */,
+				ACBC58FD177EE08D00C9993B /* AFNetworking */,
+			);
+			name = "Third Party Libraries";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
