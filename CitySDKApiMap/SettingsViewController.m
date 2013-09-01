@@ -69,17 +69,12 @@
     switch (indexPath.row) {
         case CLEANUP_SWITCH_CELL:
         {
-//            cell = [tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
-//            if( cell == nil ) {
-//                cell = [[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"SwitchCell"] ;
                 cell.textLabel.text = NSLocalizedString(@"Cleanup Empty Names", nil);
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 UISwitch *switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
                 cell.accessoryView = switchView;
                 [switchView setOn:[[AppState sharedInstance] setting_cleanup_data] animated:NO];
                 [switchView addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-//            }
-//            return cell;
         }
             break;
             
