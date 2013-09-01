@@ -23,6 +23,7 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
     self = [super init];
     if (self) {
         [CSDKNodesRequest initCSDKLayerKeys];
+        self.geomTypesFilter = @[@"Point", @"MultiPolygon",@"GeometryCollection",@"LineString",@"MultiLineString",@"Polygon"];
     }
     return self;
 }
