@@ -42,9 +42,7 @@
     // Do any additional setup after loading the view from its nib.
     [_mapView setDelegate:self];
     [_mapView setShowsUserLocation:YES];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLoadComplete:) name:NodesRequestNotificationName object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLoadComplete:) name:AdmrRequestNotificationName object:nil];
+
     
     [self loadResults];
 
@@ -89,17 +87,21 @@
         _request.cleanup_data = YES;
     }
     
+    //add the observer
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLoadComplete:) name:NodesRequestNotificationName object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLoadComplete:) name:AdmrRequestNotificationName object:nil];
+
+    
     //build the path for the request
     NSString *path = @"";
     path = [path stringByAppendingString:[_request baseUrlForRequest]];
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
-    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        
-        [ _request executeAndProcessRequest];
-        
-    });
+
+    [ _request executeAndProcessRequest];
+    
+
     
 }
 
@@ -202,6 +204,9 @@
 
 -(void)handleLoadComplete:(NSNotification *) notification
 {
+    //Load is complete, so remove the observer
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NodesRequestNotificationName object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AdmrRequestNotificationName object:nil];
     
     __weak MapViewController *weakSelf = self;
     
