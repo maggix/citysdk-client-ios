@@ -37,6 +37,7 @@ typedef NS_ENUM(NSUInteger, CSDKLayerTypes)
 @property (nonatomic, assign) double longitude;
 @property (nonatomic, assign) int per_page;
 @property (nonatomic, assign) int radius;
+@property (nonatomic, strong) NSDictionary *additionalParams;
 
 //For processing the request
 @property (nonatomic, assign) BOOL cleanup_data;

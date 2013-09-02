@@ -48,11 +48,14 @@
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLoadComplete:) name:NodesRequestNotificationName object:nil];
 
+
     
     [_admrTextField endEditing:YES];
     [_nodesTextField endEditing:YES];
     
+    //cleanup
     [_mapView removeOverlays:_mapView.overlays];
+    [_mapView removeAnnotations:_mapView.annotations];
     _allCoordinates = [[NSMutableArray alloc] init];
         
     //build the path for the request

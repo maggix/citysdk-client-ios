@@ -77,7 +77,7 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
 
 - (NSDictionary*)requestParamsForRequest
 {
-    NSMutableDictionary *returnDict = [[NSMutableDictionary alloc] init]; //WithObjectsAndKeys:
+    __block NSMutableDictionary *returnDict = [[NSMutableDictionary alloc] init]; //WithObjectsAndKeys:
     if(_layerValue != nil && _layerKey != nil){
         [returnDict setObject:_layerValue forKey:_layerKey];
     }
@@ -87,6 +87,12 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
     if(_latitude && _longitude){
         [returnDict setObject:[NSNumber numberWithDouble:_latitude] forKey:@"lat"];
         [returnDict setObject:[NSNumber numberWithDouble:_longitude] forKey:@"lon"];
+    }
+    if([_additionalParams count] > 0)
+    {
+        [_additionalParams enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            [returnDict setObject:obj forKey:key];
+        }];
     }
     if (_radius) {
         [returnDict setObject:[NSNumber numberWithInt:_radius] forKey:@"radius"];

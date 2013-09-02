@@ -40,12 +40,13 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [_mapView setDelegate:self];
-    [_mapView setShowsUserLocation:YES];
 
-    
+
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
     [self loadResults];
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -208,7 +209,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NodesRequestNotificationName object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AdmrRequestNotificationName object:nil];
     
-    __weak MapViewController *weakSelf = self;
+//    __weak MapViewController *weakSelf = self;
     
     NSDictionary *userDict = [notification userInfo];
     if(![userDict objectForKey:@"error"])
@@ -228,9 +229,11 @@
         
     }
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
-        });
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//            [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
+//        });
+    
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
 }
 
 @end

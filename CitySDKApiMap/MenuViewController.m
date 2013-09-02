@@ -37,12 +37,13 @@
     [super viewDidLoad];
     [self setTitle:@"Requests"];
     [self initObjects];
-    [self initLocationObjects];
+//    [self initLocationObjects];
     
     [self startLocationServices];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -129,7 +130,7 @@
 
 - (void)initLocationObjects
 {
-    if(_locationObjects == nil){
+
         _locationObjects = [[NSMutableArray alloc] init];
         
         //museums 1KM from here
@@ -143,9 +144,31 @@
         r1.radius = 1000;
         [_locationObjects addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Museums within 1Km from here", @"title", r1, @"request", nil]];
         
-        //in what ADMR am I now?
+        //All Administrative regions, ordered (by default from citysdk) from the closest to where I am
+        r1 = [[CSDKNodesRequest alloc] init];
+        r1.admr = nil;
+        r1.layerKey = @"layer";
+        r1.layerValue = @"admr";
+        r1.additionalParams = @{@"admr::admn_level": @"3"};
+        r1.per_page = 100;
+        r1.latitude = _location.coordinate.latitude;
+        r1.longitude = _location.coordinate.longitude;
+//        r1.radius = 1000;
+        [_locationObjects addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"All Admrs ordered by distance from here", @"title", r1, @"request", nil]];
         
-    }
+        //in what ADMR am I now?
+        r1 = [[CSDKNodesRequest alloc] init];
+        r1.admr = nil;
+        r1.layerKey = @"layer";
+        r1.layerValue = @"admr";
+        r1.additionalParams = @{@"admr::admn_level": @"3"};
+        r1.per_page = 100;
+        r1.latitude = _location.coordinate.latitude;
+        r1.longitude = _location.coordinate.longitude;
+        r1.radius = 1000;
+        [_locationObjects addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"In what ADMR am I now?", @"title", r1, @"request", nil]];
+    
+        
 }
 
 
@@ -265,6 +288,7 @@ return nil;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     // Navigation logic may go here. Create and push another view controller.
     switch (indexPath.section) {
         case 0:
@@ -277,10 +301,12 @@ return nil;
             break;
         case 1:
         {
-            MapViewController *detailViewController = [[MapViewController alloc] initWithNibName:@"MapViewController" bundle:nil];
-            detailViewController.request = [[_locationObjects objectAtIndex:indexPath.row] objectForKey:@"request"];
-            [self.navigationController pushViewController:detailViewController animated:YES];
+            MapViewController *mapViewController = [[MapViewController alloc] initWithNibName:@"MapViewController" bundle:nil];
+            mapViewController.request = [[_locationObjects objectAtIndex:indexPath.row] objectForKey:@"request"];
+            [mapViewController setTitle:@""];
+            [self.navigationController pushViewController:mapViewController animated:YES];
         }
+            break;
         default:
         {
             ViewController *viewController = [[ViewController alloc] initWithNibName:@"ViewController" bundle:nil];
@@ -320,11 +346,13 @@ return nil;
     if (abs(howRecent) < 15.0) {
         
         _location = currentLocation;
-        [_locationObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            ((CSDKNodesRequest*)[obj objectForKey:@"request"]).latitude = _location.coordinate.latitude;
-            ((CSDKNodesRequest*)[obj objectForKey:@"request"]).longitude = _location.coordinate.longitude;
-        }];
+//        [_locationObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+//            ((CSDKNodesRequest*)[obj objectForKey:@"request"]).latitude = _location.coordinate.latitude;
+//            ((CSDKNodesRequest*)[obj objectForKey:@"request"]).longitude = _location.coordinate.longitude;
+//        }];
         [locationManager stopUpdatingLocation];
+        [self initLocationObjects];
+        [self.tableView reloadData];
     }
     
 }

@@ -63,6 +63,7 @@
 		ACFC840817D4ADEF00FB252E /* SBJsonStreamWriterAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = ACFC83FC17D4ADEF00FB252E /* SBJsonStreamWriterAccumulator.m */; };
 		ACFC840917D4ADEF00FB252E /* SBJsonStreamWriterState.m in Sources */ = {isa = PBXBuildFile; fileRef = ACFC83FE17D4ADEF00FB252E /* SBJsonStreamWriterState.m */; };
 		ACFC840A17D4ADEF00FB252E /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = ACFC840017D4ADEF00FB252E /* SBJsonWriter.m */; };
+		ACFC841717D52C0100FB252E /* amsterdamcentrum.gpx in Resources */ = {isa = PBXBuildFile; fileRef = ACFC841617D52C0100FB252E /* amsterdamcentrum.gpx */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -183,6 +184,7 @@
 		ACFC83FE17D4ADEF00FB252E /* SBJsonStreamWriterState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SBJsonStreamWriterState.m; path = "json-framework/src/main/objc/SBJsonStreamWriterState.m"; sourceTree = "<group>"; };
 		ACFC83FF17D4ADEF00FB252E /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SBJsonWriter.h; path = "json-framework/src/main/objc/SBJsonWriter.h"; sourceTree = "<group>"; };
 		ACFC840017D4ADEF00FB252E /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SBJsonWriter.m; path = "json-framework/src/main/objc/SBJsonWriter.m"; sourceTree = "<group>"; };
+		ACFC841617D52C0100FB252E /* amsterdamcentrum.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = amsterdamcentrum.gpx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -309,6 +311,7 @@
 		ACBC58E1177EE06200C9993B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				ACFC841517D52C0100FB252E /* Locations */,
 				ACBC58E2177EE06200C9993B /* CitySDKApiMap-Info.plist */,
 				ACBC58E3177EE06200C9993B /* InfoPlist.strings */,
 				ACBC58E6177EE06200C9993B /* main.m */,
@@ -408,6 +411,14 @@
 			name = SBJSON;
 			sourceTree = "<group>";
 		};
+		ACFC841517D52C0100FB252E /* Locations */ = {
+			isa = PBXGroup;
+			children = (
+				ACFC841617D52C0100FB252E /* amsterdamcentrum.gpx */,
+			);
+			path = Locations;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -485,6 +496,7 @@
 				AC0DE41F1782D501005733E1 /* MenuViewController.xib in Resources */,
 				AC5D66531789CE10007BE768 /* MapViewController.xib in Resources */,
 				AC1FD5CB17998F7600AABE5B /* SettingsViewController.xib in Resources */,
+				ACFC841717D52C0100FB252E /* amsterdamcentrum.gpx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
