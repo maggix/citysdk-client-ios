@@ -145,14 +145,14 @@
     NSDictionary *userDict = [notification userInfo];
     if(![userDict objectForKey:@"error"])
     {
-        
-        NSLog(@"allcoordinates %@", [userDict objectForKey:@"allCoordinates"]);
         [_mapView addAnnotations:[userDict objectForKey:@"annotations"]];
         [_mapView addOverlays:[userDict objectForKey:@"result"]];
         if ([[userDict objectForKey:@"allCoordinates"] count] > 0) {
             [_mapView setRegion:[self getCenterRegionFromPoints:[userDict objectForKey:@"allCoordinates"]] animated:YES];
         }
-        
+#if DEBUG
+        NSLog(@"Load completed successfully. %d results", [[userDict objectForKey:@"result"] count]);
+#endif
     }
     else{
         UIAlertView *a = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error while loading", nil) message:[NSString stringWithFormat:@"%@", [[userDict objectForKey:@"resultError"] description]] delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles: nil];

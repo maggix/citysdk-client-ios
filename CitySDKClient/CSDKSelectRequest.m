@@ -33,8 +33,8 @@ NSString* const SelectRequestNotificationName = @"kSelectRequestComplete";
      [[CSDKHTTPClient sharedClient] getPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
          NSLog(@"operation: %@", [operation description]);
          NSLog(@"operation: %@", [[operation request] URL]);
-         __autoreleasing NSError* dataError = nil;
-         NSDictionary *r = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:&dataError];
+         SBJsonParser *parser = [[SBJsonParser alloc] init];
+         NSDictionary *r = [parser objectWithData:responseObject];
          NSArray *results = [r objectForKey:@"results"];
          
          

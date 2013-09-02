@@ -7,8 +7,6 @@
 //
 
 #import "CSDKHTTPClient.h"
-#import "AFJSONRequestOperation.h"
-#import "AFURLConnectionOperation.h"
 
 #define kCitySDKApiBaseUrl @"http://api.citysdk.waag.org/"
 
@@ -36,6 +34,8 @@
     
     // Accept HTTP Header; see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1
 	[self setDefaultHeader:@"Accept" value:@"application/json"];
+    [self setDefaultHeader:@"Content-Type" value:@"application/json"];
+    [self setDefaultHeader:@"Accept-Charset" value:@"UTF-8"];
     
     // By default, the example ships with SSL pinning enabled for the app.net API pinned against the public key of adn.cer file included with the example. In order to make it easier for developers who are new to AFNetworking, SSL pinning is automatically disabled if the base URL has been changed. This will allow developers to hack around with the example, without getting tripped up by SSL pinning.
     if ([[url scheme] isEqualToString:@"https"] && [[url host] isEqualToString:@"alpha-api.app.net"]) {

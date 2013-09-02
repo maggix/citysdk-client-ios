@@ -68,8 +68,8 @@ NSString* const AdmrRequestNotificationName = @"kAdmrRequestComplete";
     }
     
     [[CSDKHTTPClient sharedClient] getPath:path parameters:[self requestParamsForRequest] success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        __autoreleasing NSError* dataError = nil;
-        NSDictionary *r = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:&dataError];
+        SBJsonParser *parser = [[SBJsonParser alloc] init];
+        NSDictionary *r = [parser objectWithData:responseObject];
         
         __block NSMutableArray *allCoordinates = [[NSMutableArray alloc] init];
         __block NSMutableArray *annotations = [[NSMutableArray alloc] init];

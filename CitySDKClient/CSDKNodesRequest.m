@@ -127,10 +127,10 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
     }
    
     [[CSDKHTTPClient sharedClient] getPath:path parameters:[self requestParamsForRequest] success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        __autoreleasing NSError* dataError = nil;
-        NSString *s = [[NSString alloc] initWithData:responseObject encoding:NSISOLatin1StringEncoding];
-        NSData *d = [s dataUsingEncoding:NSASCIIStringEncoding];
-        NSDictionary *r = [NSJSONSerialization JSONObjectWithData:d options:NSJSONReadingAllowFragments error:&dataError];
+
+        SBJsonParser *parser = [[SBJsonParser alloc] init];
+        NSDictionary *r = [parser objectWithData:responseObject];
+
         
         __block NSMutableArray *allCoordinates = [[NSMutableArray alloc] init];
         __block NSMutableArray *annotations = [[NSMutableArray alloc] init];
@@ -339,7 +339,6 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
 - (void)executeAndProcessRequest
 {
     [self executeAndProcessRequestWithQuery:nil];
-
 }
 
 

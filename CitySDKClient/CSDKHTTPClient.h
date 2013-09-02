@@ -8,6 +8,9 @@
 #import <Foundation/Foundation.h>
 #import "AFNetworking.h"
 #import "AFHTTPClient.h"
+#import "AFJSONRequestOperation.h"
+#import "AFURLConnectionOperation.h"
+#import "SBJson.h"
 
 
 @interface CSDKHTTPClient : AFHTTPClient
