@@ -15,6 +15,8 @@ extern NSString* const SelectRequestNotificationName;
 @property (nonatomic, strong) NSString *nodeName;  //e.g. n34050860
 @property (nonatomic, strong) NSString *selectItem; //e.g. regions
 
+@property (nonatomic, assign) BOOL skipGeom;
+
 - (NSString*)baseUrlForRequest;
 -(void)executeAndProcessRequestWithQuery:(NSString*)query;
 -(void)executeAndProcessRequest;

@@ -42,6 +42,7 @@ typedef NS_ENUM(NSUInteger, CSDKLayerTypes)
 //For processing the request
 @property (nonatomic, assign) BOOL cleanup_data;
 @property (nonatomic, strong) NSArray *geomTypesFilter;
+@property (nonatomic, assign) BOOL skipGeom;
 
 + (CSDKNodesRequest*)requestWithAdmr:(NSString*)admr layerKey:(NSString*)layerKey layerValue:(NSString*)layerValue latitude:(double)latitude longitude:(double)longitude perPage:(int)perPage radius:(int)radius;
 

@@ -15,6 +15,8 @@ extern NSString* const AdmrRequestNotificationName;
 @property (nonatomic, strong) NSString *admr;
 @property (nonatomic, assign) int per_page;
 
+@property (nonatomic, assign) BOOL skipGeom;
+
 - (NSDictionary*)requestParamsForRequest;
 
 - (NSString*)baseUrlForRequest;

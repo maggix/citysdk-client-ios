@@ -101,12 +101,9 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
     {
         [returnDict setObject:[NSNumber numberWithInt:_per_page] forKey:@"per_page"];
     }
-    [returnDict setObject:@"true" forKey:@"geom"];
-//    _layerValue, _layerKey,
-//    _latitude, @"lat",
-//    _longitude, @"lon",
-//    _radius, @"radius",
-//    @"true", @"geom",
+    if(!_skipGeom){
+        [returnDict setObject:@"true" forKey:@"geom"];
+    }
     
     return returnDict;
 }

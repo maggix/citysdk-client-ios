@@ -38,7 +38,7 @@ NSString* const SelectRequestNotificationName = @"kSelectRequestComplete";
          NSArray *results = [r objectForKey:@"results"];
          
          
-         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:results, @"result", nil];
+         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:results, @"result", results, @"CSDKResults", nil];
          //using this I got the allCoordinates nil-ed
          //  @{@"result": result,
          //                                       @"allCoordinates,": allCoordinates,
