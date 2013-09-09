@@ -131,7 +131,7 @@
         MKPolylineView *lineView = [[MKPolylineView alloc] initWithPolyline:overlay];
         lineView.lineWidth = 5;
         lineView.strokeColor = [UIColor redColor];
-        lineView.fillColor = [UIColor redColor];
+        lineView.fillColor = [[UIColor blueColor] colorWithAlphaComponent:0.4];
         return lineView;
     }
     return nil;
@@ -149,18 +149,20 @@
     if(![userDict objectForKey:@"error"])
     {
         [_mapView addAnnotations:[userDict objectForKey:@"annotations"]];
-        [_mapView addOverlays:[userDict objectForKey:@"result"]];
+        [_mapView addOverlays:[userDict objectForKey:@"polylines"]];
         if ([[userDict objectForKey:@"allCoordinates"] count] > 0) {
             [_mapView setRegion:[self getCenterRegionFromPoints:[userDict objectForKey:@"allCoordinates"]] animated:YES];
         }
+        _resultsLabel.text = [NSString stringWithFormat:@"%d results", [[userDict objectForKey:@"polylines"] count]];
 #if DEBUG
-        NSLog(@"Load completed successfully. %d results", [[userDict objectForKey:@"result"] count]);
+        NSLog(@"Load completed successfully. %d results", [[userDict objectForKey:@"polylines"] count]);
 #endif
     }
     else{
         UIAlertView *a = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error while loading", nil) message:[NSString stringWithFormat:@"%@", [[userDict objectForKey:@"resultError"] description]] delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles: nil];
         [a show];
         
+        _resultsLabel.text = @"0 results";
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{

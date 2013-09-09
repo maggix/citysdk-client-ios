@@ -20,6 +20,15 @@ NSString* const AdmrRequestNotificationName = @"kAdmrRequestComplete";
 
 //to find in which ADMR is located a certain node. It should combine the NodesRequest (with nodes within few meters) and then ask for a SelectRequest with /nodeID/select/regions to get the regions in which the node is located, and thus also the current user
 
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        self.skipGeom = NO;
+    }
+    return self;
+}
+
 - (NSString*)baseUrlForRequest
 {
     if(_admr){
@@ -111,19 +120,17 @@ NSString* const AdmrRequestNotificationName = @"kAdmrRequestComplete";
                         }
                         [results addObject:r];
                     }
-                    //Annotation in the first coordinate of the Polyline
-                    CLLocationCoordinate2D *c = malloc(sizeof(CLLocationCoordinate2D));
-                    [[polylines lastObject] getCoordinates:c range:NSMakeRange(0, 1)];
-                    CSDKMapAnnotation *annotation = [[CSDKMapAnnotation alloc] initWithTitle:r.name subtitle:r.cdkId coordinate:CLLocationCoordinate2DMake(c->latitude, c->longitude)];
+                    //Annotation
+                    CLLocationCoordinate2D center = [r.geom centerCoordinates];
+                    CSDKMapAnnotation *annotation = [[CSDKMapAnnotation alloc] initWithTitle:r.name subtitle:r.cdkId coordinate:center];
                     [annotations addObject:annotation];
-                    free(c);
                 }
                 
             }];
             
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:polylines, @"result", allCoordinates, @"allCoordinates", annotations, @"annotations", results, @"CSDKResults", nil];
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:polylines, @"polylines", allCoordinates, @"allCoordinates", annotations, @"annotations", results, @"CSDKResults", nil];
             //using this I got the allCoordinates nil-ed
-            //  @{@"result": result,
+            //  @{@"polylines": result,
             //                                       @"allCoordinates,": allCoordinates,
             //                                       @"annotations": annotations,
             //                                       };

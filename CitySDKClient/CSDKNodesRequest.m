@@ -24,6 +24,7 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
     if (self) {
         [CSDKNodesRequest initCSDKLayerKeys];
         self.geomTypesFilter = @[@"Point", @"MultiPolygon",@"GeometryCollection",@"LineString",@"MultiLineString",@"Polygon"];
+        self.skipGeom = NO;
     }
     return self;
 }
@@ -194,12 +195,11 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
                         }
                         [results addObject:r];
                     }
-                    //Annotation in the first coordinate of the Polyline
-                    CLLocationCoordinate2D *c = malloc(sizeof(CLLocationCoordinate2D));
-                    [[polylines lastObject] getCoordinates:c range:NSMakeRange(0, 1)];
-                    CSDKMapAnnotation *annotation = [[CSDKMapAnnotation alloc] initWithTitle:r.name subtitle:r.cdkId coordinate:CLLocationCoordinate2DMake(c->latitude, c->longitude)];
+                    //Annotation
+                    CLLocationCoordinate2D center = [r.geom centerCoordinates];
+                    CSDKMapAnnotation *annotation = [[CSDKMapAnnotation alloc] initWithTitle:r.name subtitle:r.cdkId coordinate:center];
                     [annotations addObject:annotation];
-                    free(c);
+
                 }
                 if ([r.geom.type isEqualToString:@"Point"] && [_geomTypesFilter containsObject:@"Point"]) {
                     //point
@@ -213,10 +213,8 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
                     free(coordinateArray);
                     
                     //Annotation
-                    CLLocationCoordinate2D c;
-                    c.latitude = lat;
-                    c.longitude = lon;
-                    CSDKMapAnnotation *annotation = [[CSDKMapAnnotation alloc] initWithTitle:r.name subtitle:r.cdkId coordinate:c];
+                    CLLocationCoordinate2D center = [r.geom centerCoordinates];
+                    CSDKMapAnnotation *annotation = [[CSDKMapAnnotation alloc] initWithTitle:r.name subtitle:r.cdkId coordinate:center];
                     [annotations addObject:annotation];
                     [results addObject:r];
                 }
@@ -244,11 +242,9 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
                     }
                     
                     //Annotation in the first coordinate of the Polyline
-                    CLLocationCoordinate2D *c = malloc(sizeof(CLLocationCoordinate2D));
-                    [[polylines lastObject] getCoordinates:c range:NSMakeRange(0, 1)];
-                    CSDKMapAnnotation *annotation = [[CSDKMapAnnotation alloc] initWithTitle:r.name subtitle:r.cdkId coordinate:CLLocationCoordinate2DMake(c->latitude, c->longitude)];
+                    CLLocationCoordinate2D center = [r.geom centerCoordinates];
+                    CSDKMapAnnotation *annotation = [[CSDKMapAnnotation alloc] initWithTitle:r.name subtitle:r.cdkId coordinate:center];
                     [annotations addObject:annotation];
-                    free(c);
                     [results addObject:r];
                 }
                 
@@ -275,11 +271,9 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
                         free(coordinateArray);
                     }
                     //Annotation in the first coordinate of the Polyline
-                    CLLocationCoordinate2D *c = malloc(sizeof(CLLocationCoordinate2D));
-                    [[polylines lastObject] getCoordinates:c range:NSMakeRange(0, 1)];
-                    CSDKMapAnnotation *annotation = [[CSDKMapAnnotation alloc] initWithTitle:r.name subtitle:r.cdkId coordinate:CLLocationCoordinate2DMake(c->latitude, c->longitude)];
+                    CLLocationCoordinate2D center = [r.geom centerCoordinates];
+                    CSDKMapAnnotation *annotation = [[CSDKMapAnnotation alloc] initWithTitle:r.name subtitle:r.cdkId coordinate:center];
                     [annotations addObject:annotation];
-                    free(c);
                     [results addObject:r];
                 }
                 if ([r.geom.type isEqualToString:@"LineString"] && [_geomTypesFilter containsObject:@"LineString"]) {
@@ -301,11 +295,10 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
                     free(coordinateArray);
                     
                     //Annotation in the first coordinate of the Polyline
-                    CLLocationCoordinate2D *c = malloc(sizeof(CLLocationCoordinate2D));
-                    [[polylines lastObject] getCoordinates:c range:NSMakeRange(0, 1)];
-                    CSDKMapAnnotation *annotation = [[CSDKMapAnnotation alloc] initWithTitle:r.name subtitle:r.cdkId coordinate:CLLocationCoordinate2DMake(c->latitude, c->longitude)];
+                    CLLocationCoordinate2D center = [r.geom centerCoordinates];
+                    CSDKMapAnnotation *annotation = [[CSDKMapAnnotation alloc] initWithTitle:r.name subtitle:r.cdkId coordinate:center];
                     [annotations addObject:annotation];
-                    free(c);
+                    
                     [results addObject:r];
                 }
                 if ([r.geom.type isEqualToString:@"GeometryCollection"] && [_geomTypesFilter containsObject:@"GeometryCollection"]) {
@@ -314,9 +307,9 @@ NSString* const NodesRequestNotificationName = @"kNodesRequestComplete";
                 }
             }];
             
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:polylines, @"result", allCoordinates, @"allCoordinates", annotations, @"annotations", results, @"CSDKResults", nil];
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:polylines, @"polylines", allCoordinates, @"allCoordinates", annotations, @"annotations", results, @"CSDKResults", nil];
             //using this I got the allCoordinates nil-ed
-            //  @{@"result": result,
+            //  @{@"polylines": result,
             //                                       @"allCoordinates,": allCoordinates,
             //                                       @"annotations": annotations,
             //                                       };

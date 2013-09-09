@@ -6,8 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
-
+#import <CoreLocation/CoreLocation.h>
 
 @interface CSDKGeom : NSObject <NSCoding>
 
@@ -17,5 +16,6 @@
 + (CSDKGeom *)modelObjectWithDictionary:(NSDictionary *)dict;
 - (id)initWithDictionary:(NSDictionary *)dict;
 - (NSDictionary *)dictionaryRepresentation;
+- (CLLocationCoordinate2D)centerCoordinates;
 
 @end

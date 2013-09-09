@@ -139,8 +139,7 @@
         MKPolylineView *lineView = [[MKPolylineView alloc] initWithPolyline:overlay];
         lineView.lineWidth = 5;
         lineView.strokeColor = [UIColor redColor];
-        //Todo: fill with a semi-transparent color
-        lineView.fillColor = [UIColor redColor];
+        lineView.fillColor = [[UIColor blueColor] colorWithAlphaComponent:0.4];
         return lineView;
     }
     return nil;
@@ -215,12 +214,12 @@
     if(![userDict objectForKey:@"error"])
     {
         [_mapView addAnnotations:[userDict objectForKey:@"annotations"]];
-        [_mapView addOverlays:[userDict objectForKey:@"result"]];
+        [_mapView addOverlays:[userDict objectForKey:@"polylines"]];
         if ([[userDict objectForKey:@"allCoordinates"] count] > 0) {
             [_mapView setRegion:[self getCenterRegionFromPoints:[userDict objectForKey:@"allCoordinates"]] animated:YES];
         }
 #if DEBUG
-        NSLog(@"Load completed successfully. %d results", [[userDict objectForKey:@"result"] count]);
+        NSLog(@"Load completed successfully. %d results", [[userDict objectForKey:@"polylines"] count]);
 #endif
     }
     else{
