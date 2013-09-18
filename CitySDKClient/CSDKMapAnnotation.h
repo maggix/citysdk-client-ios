@@ -11,8 +11,8 @@
 
 @interface CSDKMapAnnotation : NSObject <MKAnnotation>
 
-@property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSString *subtitle;
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *subtitle;
 @property (nonatomic, assign) CLLocationCoordinate2D coordinate;
 
 - (MKMapItem*)mapItem;

@@ -11,7 +11,7 @@
 
 @interface CSDKResults : NSObject <NSCoding>
 
-@property (nonatomic, strong) NSArray *layers;
+@property (nonatomic, strong) NSDictionary *layers;
 @property (nonatomic, strong) CSDKGeom *geom;
 @property (nonatomic, strong) NSString *nodeType;
 @property (nonatomic, strong) NSString *layer;
